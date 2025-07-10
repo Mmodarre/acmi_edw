@@ -1,16 +1,25 @@
-# Development environment substitutions
-# Token substitutions
-catalog: dev_catalog
-bronze_schema: bronze
-silver_schema: silver
-gold_schema: gold
-landing_path: /mnt/dev/landing
-checkpoint_path: /mnt/dev/checkpoints
-
-# Secret configuration
+dev:
+  env: dev
+  catalog: acmi_edw_dev
+  landing_volume: /Volumes/{catalog}/{raw_schema}/landing_volume
+  raw_schema: edw_raw
+  bronze_schema: edw_bronze
+  silver_schema: edw_silver
+  gold_schema: edw_gold
+  
 secrets:
-  default_scope: dev-secrets
+  default_scope: dev_secrets
   scopes:
-    database: dev-db-secrets
-    storage: dev-storage-secrets
-    api: dev-api-secrets
+    database: dev_db_secrets
+
+
+
+# global:
+#   # Company-wide standards
+#   company: mehdi_corp
+#   region: us-east-1
+#   timezone: UTC
+#   default_file_format: delta
+#   default_table_properties:
+#     delta.enableChangeDataFeed: "true"
+#     delta.autoOptimize.optimizeWrite: "true"

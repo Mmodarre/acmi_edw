@@ -1,0 +1,88 @@
+{
+  "environments": {
+    "dev": {
+      "generated/01_raw_ingestion/customer_ingestion.py": {
+        "checksum": "5eb970fbdd28c3995e9cf81b907df1136d1e5f9056cd17cdfe483b95e7855208",
+        "environment": "dev",
+        "flowgroup": "customer_ingestion",
+        "generated_path": "generated/01_raw_ingestion/customer_ingestion.py",
+        "pipeline": "01_raw_ingestion",
+        "source_yaml": "pipelines/01_raw_ingestion/csv_ingestions/customer_ingestion.yaml",
+        "source_yaml_checksum": "6fc2b1b2efdafa5ac0729ee850816d473d30592835c22250fe36c6a84996cc59",
+        "timestamp": "2025-07-11T09:55:03.168665"
+      },
+      "generated/01_raw_ingestion/lineitem_ingestion.py": {
+        "checksum": "71193a49ae8a00c00b8ec2529896a047567d510ab346e21946968e18eeb06aab",
+        "environment": "dev",
+        "flowgroup": "lineitem_ingestion",
+        "generated_path": "generated/01_raw_ingestion/lineitem_ingestion.py",
+        "pipeline": "01_raw_ingestion",
+        "source_yaml": "pipelines/01_raw_ingestion/csv_ingestions/lineitem_ingestion.yaml",
+        "source_yaml_checksum": "f3bc413ca5b6520cd6d43d33b2a1fd512bc841a4f6f075ad637e2933f4286f5a",
+        "timestamp": "2025-07-11T09:55:03.138740"
+      },
+      "generated/01_raw_ingestion/nation_ingestion.py": {
+        "checksum": "97b24f935d7dd3d83b00744df921a1270c5e8c5a96994334420b20c3737cfe8a",
+        "environment": "dev",
+        "flowgroup": "nation_ingestion",
+        "generated_path": "generated/01_raw_ingestion/nation_ingestion.py",
+        "pipeline": "01_raw_ingestion",
+        "source_yaml": "pipelines/01_raw_ingestion/csv_ingestions/nation_ingestion.yaml",
+        "source_yaml_checksum": "64bc05d337b32fd64323ca3e0d489718ad4f7f421dea1bb7660669199a1660f9",
+        "timestamp": "2025-07-11T09:55:03.220630"
+      },
+      "generated/01_raw_ingestion/orders_ingestion.py": {
+        "checksum": "ae69f090a2b11794b6a13c9602c71864c4ac2d9f2ad8045031c95ba87d69c6d7",
+        "environment": "dev",
+        "flowgroup": "orders_ingestion",
+        "generated_path": "generated/01_raw_ingestion/orders_ingestion.py",
+        "pipeline": "01_raw_ingestion",
+        "source_yaml": "pipelines/01_raw_ingestion/csv_ingestions/orders_ingestion.yaml",
+        "source_yaml_checksum": "a63f6d8c845a84c41968ec022598c2deab700b6b45d6c4ce681bf8ffb5ef9b45",
+        "timestamp": "2025-07-11T09:55:03.194436"
+      },
+      "generated/01_raw_ingestion/part_ingestion.py": {
+        "checksum": "560171d7f65f54d8c07f980cd80e12a7e903d96d81da0dffc4c66d3a799def7b",
+        "environment": "dev",
+        "flowgroup": "part_ingestion",
+        "generated_path": "generated/01_raw_ingestion/part_ingestion.py",
+        "pipeline": "01_raw_ingestion",
+        "source_yaml": "pipelines/01_raw_ingestion/json_ingestion/part_ingestion.yaml",
+        "source_yaml_checksum": "a179278a38cf9246df7385fe08c12d1f5117ef13cfcc2428d4ed1659ed4efa73",
+        "timestamp": "2025-07-11T09:55:03.030602"
+      },
+      "generated/01_raw_ingestion/partsupp_ingestion.py": {
+        "checksum": "0a65102d6b240e12b8d556148a7288dd56b72abe6dc80443b209135ef5081b43",
+        "environment": "dev",
+        "flowgroup": "partsupp_ingestion",
+        "generated_path": "generated/01_raw_ingestion/partsupp_ingestion.py",
+        "pipeline": "01_raw_ingestion",
+        "source_yaml": "pipelines/01_raw_ingestion/json_ingestion/partsupp_ingestion.yaml",
+        "source_yaml_checksum": "b91bde5a2bf32cb409d95ae7c9f2c1525be6ef8e51646d1931a4ab56e73215be",
+        "timestamp": "2025-07-11T09:55:03.062090"
+      },
+      "generated/01_raw_ingestion/region_ingestion.py": {
+        "checksum": "b1b17da3ac84657199487014be5901eae6cf1e17c260c4346166ad156ac239ff",
+        "environment": "dev",
+        "flowgroup": "region_ingestion",
+        "generated_path": "generated/01_raw_ingestion/region_ingestion.py",
+        "pipeline": "01_raw_ingestion",
+        "source_yaml": "pipelines/01_raw_ingestion/parquet_ingestions/region_ingestion.yaml",
+        "source_yaml_checksum": "a0b088b0483d7f05575467e42b6be09a5f07323816e68d5d453597fdf9501de7",
+        "timestamp": "2025-07-11T09:55:03.088835"
+      },
+      "generated/01_raw_ingestion/supplier_ingestion.py": {
+        "checksum": "8643106c2e265a01489ad69bc66a968b6b9a9974483a9d26e48b6ebe3ffdae36",
+        "environment": "dev",
+        "flowgroup": "supplier_ingestion",
+        "generated_path": "generated/01_raw_ingestion/supplier_ingestion.py",
+        "pipeline": "01_raw_ingestion",
+        "source_yaml": "pipelines/01_raw_ingestion/parquet_ingestions/supplier_ingestion.yaml",
+        "source_yaml_checksum": "d332032abdcfb9f2e763c87cd2983b586422e5dfc2debe3b69f9c5d8c2a2f55c",
+        "timestamp": "2025-07-11T09:55:03.113586"
+      }
+    }
+  },
+  "last_updated": "2025-07-11T09:55:03.221334",
+  "version": "1.0"
+}

@@ -1,0 +1,7 @@
+pipeline: raw_ingestions
+flowgroup: customer_ingestion
+
+use_template: csv_ingestion_template
+template_parameters:
+  table_name: customer
+  landing_folder: customer

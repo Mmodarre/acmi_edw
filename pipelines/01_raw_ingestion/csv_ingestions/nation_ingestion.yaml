@@ -1,0 +1,7 @@
+pipeline: raw_ingestions
+flowgroup: nation_ingestion
+
+use_template: csv_ingestion_template
+template_parameters:
+  table_name: nation
+  landing_folder: nation

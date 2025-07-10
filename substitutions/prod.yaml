@@ -1,0 +1,11 @@
+prod:
+  env: prod
+  catalog: prod_catalog
+  landing_zone: /mnt/prod/landing/tpch
+  checkpoint_path: /mnt/prod/checkpoints
+  bronze_schema: bronze
+  silver_schema: silver
+  gold_schema: gold
+  
+secrets:
+  default_scope: prod_secrets 

@@ -1,0 +1,7 @@
+pipeline: raw_ingestions
+flowgroup: supplier_ingestion
+
+use_template: parquet_ingestion_template
+template_parameters:
+  table_name: supplier
+  landing_folder: supplier

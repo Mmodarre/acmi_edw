@@ -1,0 +1,39 @@
+name: json_ingestion_template
+version: "1.0"
+description: "Standard template for ingesting JSON files with schema enforcement"
+
+presets:
+  - bronze_layer
+
+parameters:
+  - name: table_name
+    required: true
+    description: "Name of the table to ingest"
+  - name: landing_folder
+    required: true
+    description: "Name of the landing folder"
+
+actions:
+  - name: load_{{ table_name }}_json
+    type: load
+    source:
+      type: cloudfiles
+      path: "{landing_volume}/{{ landing_folder }}/*.json"
+      format: json
+      options:
+        cloudFiles.format: json
+        cloudFiles.maxFilesPerTrigger: 50
+        cloudFiles.inferColumnTypes: True
+        cloudFiles.schemaEvolutionMode: "addNewColumns"
+        cloudFiles.rescueDataColumn: "_rescued_data"
+    target: v_{{ table_name }}_raw
+    description: "Load {{ table_name }} JSON files from landing volume"
+
+  - name: write_{{ table_name }}_bronze
+    type: write
+    source: v_{{ table_name }}_raw
+    write_target:
+      type: streaming_table
+      database: "{catalog}.{raw_schema}"
+      table: "{{ table_name }}"
+      description: "Write {{ table_name }} to bronze layer" 
