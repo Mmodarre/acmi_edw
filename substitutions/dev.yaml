@@ -1,0 +1,16 @@
+# Development environment substitutions
+# Token substitutions
+catalog: dev_catalog
+bronze_schema: bronze
+silver_schema: silver
+gold_schema: gold
+landing_path: /mnt/dev/landing
+checkpoint_path: /mnt/dev/checkpoints
+
+# Secret configuration
+secrets:
+  default_scope: dev-secrets
+  scopes:
+    database: dev-db-secrets
+    storage: dev-storage-secrets
+    api: dev-api-secrets

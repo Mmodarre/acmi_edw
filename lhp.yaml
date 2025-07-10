@@ -1,0 +1,6 @@
+# LakehousePlumber Project Configuration
+name: acmi_edw
+version: "1.0"
+description: "Generated DLT pipeline project"
+author: ""
+created_date: "/Users/mehdi.modarressi/Documents/Coding/testing_lhp"
