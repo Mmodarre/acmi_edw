@@ -1,5 +1,4 @@
 # LakehousePlumber
-generated/
 *.pyc
 __pycache__/
 .pytest_cache/
@@ -22,3 +21,4 @@ venv/
 *.key
 *.pem
 secrets/
+.lhp/logs/lhp.log
