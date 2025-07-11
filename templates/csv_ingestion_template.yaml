@@ -29,6 +29,7 @@ actions:
         cloudFiles.inferColumnTypes: False
         cloudFiles.schemaEvolutionMode: "addNewColumns"
         cloudFiles.rescuedDataColumn: "_rescued_data"
+        cloudFiles.schemaHints: "schemas/{{ table_name }}_schema.yaml"
 
     target: v_{{ table_name }}_raw
     description: "Load {{ table_name }} CSV files from landing volume"
