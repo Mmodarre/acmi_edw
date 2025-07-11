@@ -33,13 +33,9 @@ operational_metadata:
       description: "Last modification time of the input file"
       applies_to: ["view"]
 
-    _pipeline_id:
-      expression: "F.col(spark.conf.get('pipeline_id'))"
-      description: "Pipeline ID"
-      applies_to: ["view","streaming_table","materialized_view"]
 
     _record_hash:
-      expression: "F.hash(*[F.col(c) for c in df.columns])"
+      expression: "F.xxhash64(*[F.col(c) for c in df.columns])"
       description: "Hash of all record fields for change detection"
       applies_to: ["streaming_table", "materialized_view", "view"]
       additional_imports:
