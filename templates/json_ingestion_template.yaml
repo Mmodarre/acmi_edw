@@ -25,7 +25,7 @@ actions:
         cloudFiles.maxFilesPerTrigger: 50
         cloudFiles.inferColumnTypes: True
         cloudFiles.schemaEvolutionMode: "addNewColumns"
-        cloudFiles.rescueDataColumn: "_rescued_data"
+        cloudFiles.rescuedDataColumn: "_rescued_data"
     target: v_{{ table_name }}_raw
     description: "Load {{ table_name }} JSON files from landing volume"
 
