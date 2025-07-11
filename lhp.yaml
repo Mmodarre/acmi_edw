@@ -1,6 +1,46 @@
 # LakehousePlumber Project Configuration
 name: acmi_edw
 version: "1.0"
-description: "Generated DLT pipeline project"
-author: ""
-created_date: "/Users/mehdi.modarressi/Documents/Coding/testing_lhp"
+description: "ACMI Delta Lakehouse Project - TPC-H"
+author: "Mehdi Modarressi"
+created_date: "2025-07-11"
+
+operational_metadata:
+  columns:
+  
+    _source_file_path:
+      expression: "F.col(_metadata.file_path)"
+      description: "File path"
+      applies_to: ["view"]
+    
+    _processing_timestamp:
+      expression: "'F.current_timestamp()'"
+      description: "When the record was processed by the pipeline"
+      applies_to: ["streaming_table", "materialized_view", "view"]
+
+    _source_file_name:
+      expression: "'_metadata.file_name'"
+      description: "Name of the input file along with its extension"
+      applies_to: ["view"]
+
+    _source_file_size:
+      expression: "'_metadata.file_size'"
+      description: "Length of the input file, in bytes"
+      applies_to: ["view"]
+
+    _source_file_modification_time:
+      expression: "'_metadata.file_modification_time'"
+      description: "Last modification time of the input file"
+      applies_to: ["view"]
+
+    _pipeline_id:
+      expression: "spark.conf.get('pipeline_id')"
+      description: "Pipeline ID"
+      applies_to: ["view","streaming_table","materialized_view"]
+
+    _record_hash:
+      expression: "F.hash(*[F.col(c) for c in df.columns])"
+      description: "Hash of all record fields for change detection"
+      applies_to: ["streaming_table", "materialized_view", "view"]
+      additional_imports:
+        - "from pyspark.sql.functions import hash"
