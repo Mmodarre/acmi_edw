@@ -23,8 +23,8 @@ actions:
       format: csv
       options:
         cloudFiles.format: csv
-        cloudFiles.header: True
-        cloudFiles.delimiter: "|"
+        header: True
+        delimiter: "|"
         cloudFiles.maxFilesPerTrigger: 10
         cloudFiles.inferColumnTypes: False
         cloudFiles.schemaEvolutionMode: "addNewColumns"
