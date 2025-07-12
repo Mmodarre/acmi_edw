@@ -82,17 +82,17 @@
         "timestamp": "2025-07-12T11:22:28.029796"
       },
       "generated/02_bronze/customer_bronze.py": {
-        "checksum": "00d01536614d8f429b39ab3e9627731c47c106d704aba55625c716ab10381ddf",
+        "checksum": "f27092fa10abb83feca3ee95192dcae6aaba32b3c9c79e6f0bb08ed12bb35445",
         "environment": "dev",
         "flowgroup": "customer_bronze",
         "generated_path": "generated/02_bronze/customer_bronze.py",
         "pipeline": "02_bronze",
         "source_yaml": "pipelines/02_bronze/customer_bronze.yaml",
-        "source_yaml_checksum": "c0bdd862eecc191ec6fb360d85fbd5cc56ecd65c73aca80bfa02a73eba17d25d",
-        "timestamp": "2025-07-12T11:22:27.880781"
+        "source_yaml_checksum": "5b4e0e62f019bb452ea3f18a7473e83dd7ef63d3cd734455c4c2234cb538b430",
+        "timestamp": "2025-07-12T11:31:31.247455"
       }
     }
   },
-  "last_updated": "2025-07-12T11:22:28.158459",
+  "last_updated": "2025-07-12T11:31:31.247930",
   "version": "1.0"
 }

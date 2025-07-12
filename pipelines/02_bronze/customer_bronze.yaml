@@ -4,6 +4,7 @@ flowgroup: customer_bronze
 actions:
   - name: customer_raw_load
     type: load
+    operational_metadata: ["_processing_timestamp"]
     readMode: stream
     source:
       type: delta
@@ -31,7 +32,7 @@ actions:
         _source_file_size,
         _source_file_modification_time,
         _record_hash
-      FROM v_customer_bronze
+      FROM stream(v_customer_bronze)
 
   - name: customer_bronze_DQE
     type: transform
