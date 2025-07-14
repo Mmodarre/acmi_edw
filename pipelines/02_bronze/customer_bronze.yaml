@@ -3,7 +3,7 @@
 pipeline: bronze_load
 # Flowgroup are conceptual artifacts and has no functional purpose
 # there are used to group actions together in the generated files
-flowgroup: customer_bronze_dim
+flowgroup: customer_bronze
 
 actions:
   # Load is not neceseary here as everything is in the same pipeline

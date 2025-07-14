@@ -1,0 +1,41 @@
+# This pipeline is used to create a daily sales summary materialized view
+# Pipeline variable puts the generate files in the same folder for the pipeline to pick up
+pipeline: gold_load
+# Flowgroup are conceptual artifacts and has no functional purpose
+# there are used to group actions together in the generated files
+flowgroup: sales_summary_daily_mv
+
+actions:
+  - name: customer_silver_dim_load
+    type: load
+    source:
+      type: delta
+      database: "{catalog}.{silver_schema}"
+      table: customer
+    target: v_customer_silver_dim
+
+  - name: orders_silver_fct_load
+    type: load
+    source:
+      type: delta
+      database: "{catalog}.{silver_schema}"
+      table: orders
+    target: v_orders_silver_fct
+
+  - name: sales_summary_daily_mv
+    type: transform
+    transform_type: sql
+    source: v_sales_summary_daily_mv
+    target: v_sales_summary_daily_mv
+    sql: |
+      SELECT 
+        order_date,
+        COUNT(DISTINCT order_id) as total_orders,
+        COUNT(DISTINCT customer_id) as unique_customers,
+        SUM(total_price) as total_revenue,
+        AVG(total_price) as avg_order_value,
+        SUM(CASE WHEN order_status = 'F' THEN 1 ELSE 0 END) as fulfilled_orders,
+        SUM(CASE WHEN order_status = 'O' THEN 1 ELSE 0 END) as open_orders
+      FROM v_orders_silver_fct o
+      JOIN v_customer_silver_dim c ON o.customer_id = c.customer_id
+      GROUP BY order_date

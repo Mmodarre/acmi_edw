@@ -3,7 +3,7 @@
 pipeline: bronze_load
 # Flowgroup are conceptual artifacts and has no functional purpose
 # there are used to group actions together in the generated files
-flowgroup: nation_bronze_dim
+flowgroup: nation_bronze
 
 actions:
   - name: nation_raw_load
