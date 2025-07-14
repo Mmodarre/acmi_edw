@@ -320,9 +320,19 @@
         "source_yaml": "pipelines/03_silver/dim/supplier_silver_dim.yaml",
         "source_yaml_checksum": "1e4c2647cdf137e563824983dc5bea53a56b54075f227d91665c80e60bc33cb7",
         "timestamp": "2025-07-14T14:51:18.592178"
+      },
+      "generated/04_gold/sales_summary_daily_mv.py": {
+        "checksum": "6e93761cedaf51863e7109133ea8878c63962d1f7c8128196b57592dae0db7a4",
+        "environment": "dev",
+        "flowgroup": "sales_summary_daily_mv",
+        "generated_path": "generated/04_gold/sales_summary_daily_mv.py",
+        "pipeline": "04_gold",
+        "source_yaml": "pipelines/04_gold/sales_summary_daily_mv.yaml",
+        "source_yaml_checksum": "fe85047deb3dfcc88f6c5461667cf189c22e5a7d2c3ee155b567ca33b173703b",
+        "timestamp": "2025-07-14T14:58:48.171709"
       }
     }
   },
-  "last_updated": "2025-07-14T14:51:19.061431",
+  "last_updated": "2025-07-14T14:58:48.172315",
   "version": "1.0"
 }
