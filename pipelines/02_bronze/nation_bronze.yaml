@@ -42,4 +42,4 @@ actions:
     write_target:
       type: streaming_table
       database: "{catalog}.{bronze_schema}"
-      table: "nation_dim"
+      table: "nation"

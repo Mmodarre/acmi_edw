@@ -16,6 +16,14 @@ The solution processes 8 core TPC-H tables:
 - `region` - Region dimension data
 - `supplier` - Supplier dimension data
 
+## Todo
+
+- [ ] Add Applend flow with multiple sources writing to the same table (for now using append_flow for single source to each table)
+- [ ] Add once=True for nation and region tables (for now using Auto_cdc_flow)
+- [ ] Add presets demonstration (currently presets are not used)
+- [ ] Add SQL file for SQL queries (for now using inline SQL queries in the pipeline)
+- [ ] Add Python transformation for demonstration.
+
 ## Architecture
 
 ### Medallion Architecture Layers
