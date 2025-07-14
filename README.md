@@ -227,7 +227,7 @@ The gold layer contains business-ready analytics tables implemented as materiali
 
 #### `sales_summary_daily_mv`
 ```sql
--- Daily sales performance metrics
+-- Daily sales performance metrics with SCD Type 2 dimension joins
 SELECT 
     order_date,
     COUNT(DISTINCT o.order_id) as total_orders,
@@ -238,6 +238,8 @@ SELECT
     SUM(CASE WHEN order_status = 'O' THEN 1 ELSE 0 END) as open_orders
 FROM {catalog}.{silver_schema}.orders_fct o
 JOIN {catalog}.{silver_schema}.customer_dim c ON o.customer_id = c.customer_id
+  AND o.order_date >= c.__start_at 
+  AND (o.order_date < c.__end_at OR c.__end_at IS NULL)
 GROUP BY order_date
 ```
 
@@ -257,7 +259,7 @@ GROUP BY YEAR(order_date), MONTH(order_date)
 
 #### `revenue_by_region_mv`
 ```sql
--- Revenue analysis by geographic region
+-- Revenue analysis by geographic region with SCD Type 2 dimension joins
 SELECT 
     r.name as region_name,
     n.name as nation_name,
@@ -267,8 +269,14 @@ SELECT
     COUNT(DISTINCT c.customer_id) as region_customers
 FROM {catalog}.{silver_schema}.orders_fct o
 JOIN {catalog}.{silver_schema}.customer_dim c ON o.customer_id = c.customer_id
+  AND o.order_date >= c.__start_at 
+  AND (o.order_date < c.__end_at OR c.__end_at IS NULL)
 JOIN {catalog}.{silver_schema}.nation_dim n ON c.nation_id = n.nation_id
+  AND o.order_date >= n.__start_at 
+  AND (o.order_date < n.__end_at OR n.__end_at IS NULL)
 JOIN {catalog}.{silver_schema}.region_dim r ON n.region_id = r.region_id
+  AND o.order_date >= r.__start_at 
+  AND (o.order_date < r.__end_at OR r.__end_at IS NULL)
 GROUP BY r.name, n.name, DATE_TRUNC('month', o.order_date)
 ```
 
@@ -276,7 +284,7 @@ GROUP BY r.name, n.name, DATE_TRUNC('month', o.order_date)
 
 #### `customer_lifetime_value_mv`
 ```sql
--- Customer lifetime value and behavior metrics
+-- Customer lifetime value and behavior metrics with SCD Type 2 dimension joins
 SELECT 
     c.customer_id,
     c.name as customer_name,
@@ -290,7 +298,11 @@ SELECT
     DATEDIFF(MAX(o.order_date), MIN(o.order_date)) as customer_tenure_days
 FROM {catalog}.{silver_schema}.customer_dim c
 JOIN {catalog}.{silver_schema}.orders_fct o ON c.customer_id = o.customer_id
+  AND o.order_date >= c.__start_at 
+  AND (o.order_date < c.__end_at OR c.__end_at IS NULL)
 JOIN {catalog}.{silver_schema}.nation_dim n ON c.nation_id = n.nation_id
+  AND o.order_date >= n.__start_at 
+  AND (o.order_date < n.__end_at OR n.__end_at IS NULL)
 GROUP BY c.customer_id, c.name, c.market_segment, n.name
 ```
 
@@ -298,24 +310,26 @@ GROUP BY c.customer_id, c.name, c.market_segment, n.name
 
 #### `product_performance_mv`
 ```sql
--- Product sales performance and popularity metrics by month
+-- Product sales performance and popularity metrics by month with SCD Type 2 dimension joins
 SELECT 
-    p.part_key,
+    p.part_id,
     p.name as product_name,
     p.manufacturer,
     p.brand,
     p.type,
-    COUNT(DISTINCT l.order_key) as orders_count,
+    COUNT(DISTINCT l.order_id) as orders_count,
     SUM(l.quantity) as total_quantity_sold,
     SUM(l.extended_price) as total_revenue,
     AVG(l.extended_price / l.quantity) as avg_unit_price,
     SUM(l.extended_price * l.discount) as total_discount_given,
     AVG(l.discount) as avg_discount_rate,
     DATE_TRUNC('month', o.order_date) as month
-FROM {catalog}.{silver_schema}.part_dim p
-JOIN {catalog}.{silver_schema}.lineitem_fct l ON p.part_key = l.part_key
-JOIN {catalog}.{silver_schema}.orders_fct o ON l.order_key = o.order_key
-GROUP BY p.part_key, p.name, p.manufacturer, p.brand, p.type, DATE_TRUNC('month', o.order_date)
+FROM {catalog}.{silver_schema}.lineitem_fct l
+JOIN {catalog}.{silver_schema}.orders_fct o ON l.order_id = o.order_id
+JOIN {catalog}.{silver_schema}.part_dim p ON l.part_id = p.part_id
+  AND o.order_date >= p.__start_at 
+  AND (o.order_date < p.__end_at OR p.__end_at IS NULL)
+GROUP BY p.part_id, p.name, p.manufacturer, p.brand, p.type, DATE_TRUNC('month', o.order_date)
 ```
 
 ### 🎯 **Executive Dashboard (Composite MV)**
@@ -347,7 +361,7 @@ customer_metrics AS (
 ),
 top_products AS (
   SELECT 
-    month, COUNT(DISTINCT part_key) as active_products,
+    month, COUNT(DISTINCT part_id) as active_products,
     SUM(total_revenue) as product_revenue,
     SUM(total_quantity_sold) as total_units_sold
   FROM {catalog}.{gold_schema}.product_performance_mv
@@ -492,6 +506,24 @@ Analytics & Dashboards
 - **Denormalized**: Pre-joined tables eliminate complex joins during analysis
 - **Aggregated**: Pre-calculated metrics for fast dashboard queries
 - **Consistent Naming**: All tables use `_mv` suffix to indicate materialized views
+- **SCD Type 2 Support**: All dimension joins include temporal validity using `__start_at` and `__end_at` columns
+
+### 🕒 **SCD Type 2 Dimension Joins**
+
+All dimension joins follow the SCD Type 2 pattern to ensure temporal consistency:
+
+```sql
+JOIN dimension_table d ON fact.dimension_key = d.dimension_key 
+  AND fact.transaction_date >= d.__start_at 
+  AND (fact.transaction_date < d.__end_at OR d.__end_at IS NULL)
+```
+
+This ensures that:
+- **Historical Accuracy**: Each fact record joins to the dimension record that was valid at the time of the transaction
+- **Data Integrity**: Changes to dimension attributes over time are properly handled
+- **Temporal Consistency**: Reports reflect the state of dimensions as they existed when transactions occurred
+
+**Example**: A customer's market segment may change over time. Orders from January should use the customer's January market segment, not their current segment.
 
 ## Data Sources and Formats
 

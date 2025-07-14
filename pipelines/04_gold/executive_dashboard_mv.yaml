@@ -48,7 +48,7 @@ actions:
         top_products AS (
           SELECT 
             month,
-            COUNT(DISTINCT part_key) as active_products,
+            COUNT(DISTINCT part_id) as active_products,
             SUM(total_revenue) as product_revenue,
             AVG(avg_unit_price) as avg_product_price,
             SUM(total_quantity_sold) as total_units_sold
@@ -110,7 +110,7 @@ actions:
         LEFT JOIN regional_performance rp ON ms.year = YEAR(rp.month) AND ms.month = MONTH(rp.month)
         LEFT JOIN top_products tp ON ms.year = YEAR(tp.month) AND ms.month = MONTH(tp.month)
         CROSS JOIN customer_metrics cm
-        WHERE ms.year >= YEAR(DATE_SUB(CURRENT_DATE(), INTERVAL 24 MONTH))
+        WHERE ms.year >= YEAR(add_months(CURRENT_DATE(), -24))
         ORDER BY ms.year, ms.month
     target: v_executive_dashboard_mv_sql
     
