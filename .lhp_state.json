@@ -82,27 +82,37 @@
         "timestamp": "2025-07-14T11:15:11.239903"
       },
       "generated/02_bronze/customer_bronze_dim.py": {
-        "checksum": "a2fe61af738015bc66d3357484f7624b9d70f6339f27659575784367f6a55395",
+        "checksum": "f5feb6b94ef2e044c7a825caf14344de8c942c3ceb80e9fb9ce8990d8da05d09",
         "environment": "dev",
         "flowgroup": "customer_bronze_dim",
         "generated_path": "generated/02_bronze/customer_bronze_dim.py",
         "pipeline": "02_bronze",
         "source_yaml": "pipelines/02_bronze/customer_bronze_dim.yaml",
-        "source_yaml_checksum": "42cea1d67c330c1175d6c114f1e9055927c816ad75e10ac600cf32b9a0c2e054",
-        "timestamp": "2025-07-14T11:15:11.037505"
+        "source_yaml_checksum": "26111bba7c15fc1233047c019d1162f607e7def4e4e3b9855a71c521bbea80bc",
+        "timestamp": "2025-07-14T11:20:38.887915"
       },
       "generated/02_bronze/lineitem_bronze_fct.py": {
-        "checksum": "c1de4ec6edca40d30408407205c1ac0078b5bec914dbc456df2637bd0415fdc9",
+        "checksum": "09e156e65d9d3c949a7ae95a331d0b098ba6ae9037d998041c9e0aef01f3dddf",
         "environment": "dev",
         "flowgroup": "lineitem_bronze_fct",
         "generated_path": "generated/02_bronze/lineitem_bronze_fct.py",
         "pipeline": "02_bronze",
         "source_yaml": "pipelines/02_bronze/lineitem_bronze_fct.yaml",
-        "source_yaml_checksum": "d6cec4b27abd78b6f791f448323815bcc2b62078b3c21537a39e3c29a4b58638",
-        "timestamp": "2025-07-14T11:15:11.071176"
+        "source_yaml_checksum": "9ccc8fbb0082a09f4ae927e6fe08321297c97ec1abd37bb0913054c6adf9ad20",
+        "timestamp": "2025-07-14T11:20:38.922859"
+      },
+      "generated/02_bronze/nation_bronze_dim.py": {
+        "checksum": "b8843c651f35d38839fd7f43b867bee968ab1bead96e85dd63cc52459fa081ae",
+        "environment": "dev",
+        "flowgroup": "nation_bronze_dim",
+        "generated_path": "generated/02_bronze/nation_bronze_dim.py",
+        "pipeline": "02_bronze",
+        "source_yaml": "pipelines/02_bronze/nation_bronze_dim.yaml",
+        "source_yaml_checksum": "d2e9abff80501c7d96ba257593c5f3a87bbdca7cd7d6cc973cc68ef1ed4f4149",
+        "timestamp": "2025-07-14T11:20:38.855877"
       }
     }
   },
-  "last_updated": "2025-07-14T11:15:11.381051",
+  "last_updated": "2025-07-14T11:20:38.923526",
   "version": "1.0"
 }
