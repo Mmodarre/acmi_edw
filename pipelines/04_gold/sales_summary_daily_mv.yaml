@@ -14,14 +14,14 @@ actions:
       sql: |
         SELECT 
           order_date,
-          COUNT(DISTINCT order_id) as total_orders,
-          COUNT(DISTINCT customer_id) as unique_customers,
+          COUNT(DISTINCT o.order_id) as total_orders,
+          COUNT(DISTINCT c.customer_id) as unique_customers,
           SUM(total_price) as total_revenue,
           AVG(total_price) as avg_order_value,
           SUM(CASE WHEN order_status = 'F' THEN 1 ELSE 0 END) as fulfilled_orders,
           SUM(CASE WHEN order_status = 'O' THEN 1 ELSE 0 END) as open_orders
-        FROM v_orders_silver_fct o
-        JOIN v_customer_silver_dim c ON o.customer_id = c.customer_id
+        FROM {catalog}.{silver_schema}.orders_fct o
+        JOIN {catalog}.{silver_schema}.customer_dim c ON o.customer_id = c.customer_id
         GROUP BY order_date
     target: v_sales_summary_daily_mv_sql
     

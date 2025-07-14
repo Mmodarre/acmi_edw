@@ -82,14 +82,14 @@
         "timestamp": "2025-07-14T14:51:18.913196"
       },
       "generated/02_bronze/customer_bronze.py": {
-        "checksum": "2185b5925976d39dd4e4a303414b552b74f911a72b15e5dc4f243198577380e1",
+        "checksum": "cf47dcb7e2003455a77499ca5aae0e6ad9f8a0257b49ed736b178a83d9e3e770",
         "environment": "dev",
         "flowgroup": "customer_bronze",
         "generated_path": "generated/02_bronze/customer_bronze.py",
         "pipeline": "02_bronze",
         "source_yaml": "pipelines/02_bronze/customer_bronze.yaml",
-        "source_yaml_checksum": "b1a94599406cb2d2d3314fb93e3accf06178d9012739e5a394725883b5d8bf7d",
-        "timestamp": "2025-07-14T14:51:18.526857"
+        "source_yaml_checksum": "6843d7328595a64dea0304d4813dc10557c48bfcb5a8d879a7cbe8edea0d1214",
+        "timestamp": "2025-07-14T15:20:28.724917"
       },
       "generated/02_bronze/customer_bronze_dim.py": {
         "checksum": "41ef3bea08367c0bd9307a2c5b7341c3e26b09a0cafa731b47b84f3686e97cb5",
@@ -321,18 +321,38 @@
         "source_yaml_checksum": "1e4c2647cdf137e563824983dc5bea53a56b54075f227d91665c80e60bc33cb7",
         "timestamp": "2025-07-14T14:51:18.592178"
       },
+      "generated/04_gold/revenue_by_region_mv.py": {
+        "checksum": "41bb4a9347a57dd15be12bd316bc3ac81f91dfb992da564e0e9c0ced4847433b",
+        "environment": "dev",
+        "flowgroup": "revenue_by_region_mv",
+        "generated_path": "generated/04_gold/revenue_by_region_mv.py",
+        "pipeline": "04_gold",
+        "source_yaml": "pipelines/04_gold/revenue_by_region_mv.yaml",
+        "source_yaml_checksum": "8b9dbd3a82df286f6a3d9e197f91801e6ad726d9dc91939a54abcb0f7c5a73a1",
+        "timestamp": "2025-07-14T15:25:21.508240"
+      },
       "generated/04_gold/sales_summary_daily_mv.py": {
-        "checksum": "6e93761cedaf51863e7109133ea8878c63962d1f7c8128196b57592dae0db7a4",
+        "checksum": "82b8e62bb2b10b8db9da855233e3a473465089bfecb8f862b1140fb5435f1a87",
         "environment": "dev",
         "flowgroup": "sales_summary_daily_mv",
         "generated_path": "generated/04_gold/sales_summary_daily_mv.py",
         "pipeline": "04_gold",
         "source_yaml": "pipelines/04_gold/sales_summary_daily_mv.yaml",
-        "source_yaml_checksum": "fe85047deb3dfcc88f6c5461667cf189c22e5a7d2c3ee155b567ca33b173703b",
-        "timestamp": "2025-07-14T14:58:48.171709"
+        "source_yaml_checksum": "41464e2215f120cdeddd092995db59cde4ea6dc868037098f344c396480b413f",
+        "timestamp": "2025-07-14T15:08:09.597700"
+      },
+      "generated/04_gold/sales_summary_monthly_mv.py": {
+        "checksum": "0170115236dd5403ea6eb8e86e38d3db01d8a56ac56ca1388004d815b57b3d01",
+        "environment": "dev",
+        "flowgroup": "sales_summary_monthly_mv",
+        "generated_path": "generated/04_gold/sales_summary_monthly_mv.py",
+        "pipeline": "04_gold",
+        "source_yaml": "pipelines/04_gold/sales_summary_monthly_mv.yaml",
+        "source_yaml_checksum": "f60c0a4db9f74266ebe4c8225e3d8a3e4a890bafbed768727cc58eb8aaf64f95",
+        "timestamp": "2025-07-14T15:25:21.518841"
       }
     }
   },
-  "last_updated": "2025-07-14T14:58:48.172315",
+  "last_updated": "2025-07-14T15:25:21.519524",
   "version": "1.0"
 }
