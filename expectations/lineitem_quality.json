@@ -60,7 +60,7 @@
     },
     {
       "name": "valid_commitdate",
-      "expression": "commit_date IS NOT NULL AND commit_date > 0",
+      "expression": "commit_date IS NOT NULL AND commit_date >= '1900-01-01'",
       "failureAction": "warn"
     },
     {
