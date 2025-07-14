@@ -3,17 +3,17 @@
   "table": "lineitem",
   "expectations": [
     {
-      "name": "valid_orderkey",
+      "name": "valid_order_id",
       "expression": "order_id IS NOT NULL AND order_id > 0",
       "failureAction": "fail"
     },
     {
-      "name": "valid_partkey",
+      "name": "valid_part_id",
       "expression": "part_id IS NOT NULL AND part_id > 0",
       "failureAction": "fail"
     },
     {
-      "name": "valid_suppkey",
+      "name": "valid_supplier_id",
       "expression": "supplier_id IS NOT NULL AND supplier_id > 0",
       "failureAction": "fail"
     },
@@ -29,7 +29,7 @@
     },
     {
       "name": "valid_extendedprice",
-      "expression": "extendedprice IS NOT NULL AND extendedprice > 0",
+      "expression": "extended_price IS NOT NULL AND extended_price > 0",
       "failureAction": "fail"
     },
     {
@@ -44,32 +44,32 @@
       "failureAction": "warn"
     },
     {
-      "name": "valid_returnflag",
+      "name": "valid_return_flag",
       "expression": "return_flag IS NULL OR return_flag IN ('R', 'N')",
       "failureAction": "warn"
     },
     {
-      "name": "valid_linestatus",
+      "name": "valid_line_status",
       "expression": "line_status IS NULL OR line_status IN ('F', 'O')",
       "failureAction": "warn"
     },
     {
-      "name": "valid_shipdate",
+      "name": "valid_ship_date",
       "expression": "(ship_date IS NOT NULL AND ship_date >= '1900-01-01') or ship_date is null",
       "failureAction": "warn"
     },
     {
-      "name": "valid_commitdate",
+      "name": "valid_commit_date",
       "expression": "commit_date IS NOT NULL AND commit_date >= '1900-01-01'",
       "failureAction": "warn"
     },
     {
-      "name": "valid_receiptdate",
+      "name": "valid_receipt_date",
       "expression": "(receipt_date IS NOT NULL AND receipt_date >= '1900-01-01') or receipt_date is null",
       "failureAction": "warn"
     },
     {
-      "name": "valid_shipmode",
+      "name": "valid_ship_mode",
       "expression": "ship_mode IS NOT NULL AND ship_mode IN ('RAIL','REG AIR','TRUCK','MAIL','SHIP','FOB')",
       "failureAction": "warn"
     }
