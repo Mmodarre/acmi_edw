@@ -525,6 +525,31 @@ This ensures that:
 
 **Example**: A customer's market segment may change over time. Orders from January should use the customer's January market segment, not their current segment.
 
+## Data Flow Architecture
+
+The following diagrams show the data flow architecture across all four layers of the medallion architecture.
+
+### 🔄 **End-to-End Data Flow**
+
+![Data Flow](assets/End-to-End.svg)
+
+### 🔸 **Raw Ingestion Layer (`raw_ingestions` pipeline)**
+
+![Raw Ingestion Layer](assets/Raw-Ingestion.svg)
+
+### 🟡 **Bronze Layer (`bronze_load` pipeline)**
+
+![Bronze Layer](assets/Bronze-Layer.svg)
+
+### ⚪ **Silver Layer (`silver_load` pipeline)**
+
+![Silver Layer](assets/Silver-Layer.svg)
+
+### 🟣 **Gold Layer (`gold_load` pipeline)**
+
+![Gold Layer](assets/Gold-Layer.svg)
+
+
 ## Data Sources and Formats
 
 | Table     | Format  | Description |

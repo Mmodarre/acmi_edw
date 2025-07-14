@@ -5,7 +5,9 @@ pipeline: gold_load
 # there are used to group actions together in the generated files
 flowgroup: executive_dashboard_mv
 
-## In this Flowgroup we break down a CTE as below to views for simplicity but you can also you the CTE directly in the sql
+## In this Flowgroup we break down a CTE as below to views for 
+## simplicity but you can also you the CTE directly in the sql
+## ------------------------------------------------------------
 # spark.sql(
 #         """WITH monthly_sales AS (
 #   SELECT
@@ -109,7 +111,7 @@ flowgroup: executive_dashboard_mv
 # ORDER BY ms.year, ms.month
 # """
 #     )
-
+## ------------------------------------------------------------
 actions:
 
   - name: monthly_sales_sql
