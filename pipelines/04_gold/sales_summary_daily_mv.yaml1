@@ -6,27 +6,14 @@ pipeline: gold_load
 flowgroup: sales_summary_daily_mv
 
 actions:
-  - name: customer_silver_dim_load
-    type: load
-    source:
-      type: delta
-      database: "{catalog}.{silver_schema}"
-      table: customer
-    target: v_customer_silver_dim
 
-  - name: orders_silver_fct_load
+  - name: sales_summary_daily_mv_sql
     type: load
-    source:
-      type: delta
-      database: "{catalog}.{silver_schema}"
-      table: orders
-    target: v_orders_silver_fct
-
-  - name: sales_summary_daily_mv
-    type: transform
-    transform_type: sql
-    source: v_sales_summary_daily_mv
-    target: v_sales_summary_daily_mv
+    load_type: sql
+    source: {catalog}.{silver_schema}.orders_silver_fct
+    target:
+      database: {catalog}.{gold_schema}
+      table: sales_summary_daily_mv
     sql: |
       SELECT 
         order_date,
@@ -39,3 +26,13 @@ actions:
       FROM v_orders_silver_fct o
       JOIN v_customer_silver_dim c ON o.customer_id = c.customer_id
       GROUP BY order_date
+
+  - name: write_sales_summary_daily_mv
+    type: write
+    source: v_sales_summary_daily_mv_sql
+    write_target:
+      type: streaming_table
+      database: "{catalog}.{gold_schema}"
+      table: "sales_summary_daily_mv"
+
+    
