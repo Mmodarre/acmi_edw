@@ -45,12 +45,12 @@
     },
     {
       "name": "valid_returnflag",
-      "expression": "returnflag IS IN (NULL,'R', 'N')",
+      "expression": "return_flag IS NULL OR return_flag IN ('R', 'N')",
       "failureAction": "warn"
     },
     {
       "name": "valid_linestatus",
-      "expression": "line_status IS NOT NULL AND line_status IN ('F', 'O')",
+      "expression": "line_status IS NULL OR line_status IN ('F', 'O')",
       "failureAction": "warn"
     },
     {
