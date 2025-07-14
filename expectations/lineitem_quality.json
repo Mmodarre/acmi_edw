@@ -1,0 +1,78 @@
+{
+  "version": "1.0",
+  "table": "lineitem",
+  "expectations": [
+    {
+      "name": "valid_orderkey",
+      "expression": "orderkey IS NOT NULL AND orderkey > 0",
+      "failureAction": "fail"
+    },
+    {
+      "name": "valid_partkey",
+      "expression": "partkey IS NOT NULL AND partkey > 0",
+      "failureAction": "fail"
+    },
+    {
+      "name": "valid_suppkey",
+      "expression": "suppkey IS NOT NULL AND suppkey > 0",
+      "failureAction": "fail"
+    },
+    {
+      "name": "valid_linenumber",
+      "expression": "linenumber IS NOT NULL AND linenumber > 0",
+      "failureAction": "fail"
+    },
+    {
+      "name": "valid_quantity",
+      "expression": "quantity IS NOT NULL AND quantity > 0",
+      "failureAction": "fail"
+    },
+    {
+      "name": "valid_extendedprice",
+      "expression": "extendedprice IS NOT NULL AND extendedprice > 0",
+      "failureAction": "fail"
+    },
+    {
+      "name": "valid_discount",
+      "expression": "discount IS NOT NULL AND discount > 0",
+      "failureAction": "warn"
+    },
+    
+    {
+      "name": "valid_tax",
+      "expression": "tax IS NOT NULL AND tax > 0",
+      "failureAction": "warn"
+    },
+    {
+      "name": "valid_returnflag",
+      "expression": "returnflag IS IN (NULL,'R', 'N')",
+      "failureAction": "warn"
+    },
+    {
+      "name": "valid_linestatus",
+      "expression": "linestatus IS NOT NULL AND linestatus IN ('F', 'O')",
+      "failureAction": "warn"
+    },
+    {
+      "name": "valid_shipdate",
+      "expression": "(shipdate IS NOT NULL AND shipdate >= '1900-01-01') or shipdate is null",
+      "failureAction": "warn"
+    },
+    {
+      "name": "valid_commitdate",
+      "expression": "commitdate IS NOT NULL AND commitdate > 0",
+      "failureAction": "warn"
+    },
+    {
+      "name": "valid_receiptdate",
+      "expression": "(receiptdate IS NOT NULL AND receiptdate >= '1900-01-01') or receiptdate is null",
+      "failureAction": "warn"
+    },
+    {
+      "name": "valid_shipmode",
+      "expression": "shipmode IS NOT NULL AND shipmode IN ('RAIL','REG AIR','TRUCK','MAIL','SHIP','FOB')",
+      "failureAction": "warn"
+    }
+    
+  ]
+}

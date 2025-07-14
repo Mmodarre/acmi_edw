@@ -1,5 +1,5 @@
 pipeline: bronze_load
-flowgroup: customer_bronze
+flowgroup: customer_bronze_dim
 
 actions:
   - name: customer_raw_load
