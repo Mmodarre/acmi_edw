@@ -56,10 +56,11 @@ actions:
     write_target:
       type: streaming_table
       database: "{catalog}.{bronze_schema}"
-      table: "lineitem_dim"
+      table: "lineitem_fct"
       mode: "cdc"
       
       # CDC configuration
+      ## SCD Type 1 for deduplication, no history table
       cdc_config:
         keys: ["order_id"]
         sequence_by: "_source_file_modification_time"
