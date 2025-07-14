@@ -22,4 +22,5 @@ venv/
 *.pem
 secrets/
 .lhp/logs/lhp.log
+generated/
 
