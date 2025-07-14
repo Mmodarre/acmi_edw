@@ -42,7 +42,7 @@ def v_customer_bronze_cleaned():
   c_nationkey as nation_id,
   c_phone as phone,
   c_acctbal as account_balance,
-  c_mktsegment as mktsegment,
+  c_mktsegment as market_segment,
   c_comment as comment,
   _source_file_path,
   _source_file_size,

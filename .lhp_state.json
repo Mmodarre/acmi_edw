@@ -321,6 +321,16 @@
         "source_yaml_checksum": "1e4c2647cdf137e563824983dc5bea53a56b54075f227d91665c80e60bc33cb7",
         "timestamp": "2025-07-14T14:51:18.592178"
       },
+      "generated/04_gold/customer_lifetime_value.py": {
+        "checksum": "52ae944ae52525e4d612dbed2543666194a27968a25d7d67bc1f0b30f96903c3",
+        "environment": "dev",
+        "flowgroup": "customer_lifetime_value",
+        "generated_path": "generated/04_gold/customer_lifetime_value.py",
+        "pipeline": "04_gold",
+        "source_yaml": "pipelines/04_gold/customer_lifetime_value.yaml",
+        "source_yaml_checksum": "6b05027055cbe5144af08dca600daf74d08965d92d8dc29bf4c4db85721c8ee1",
+        "timestamp": "2025-07-14T15:31:00.225030"
+      },
       "generated/04_gold/revenue_by_region_mv.py": {
         "checksum": "41bb4a9347a57dd15be12bd316bc3ac81f91dfb992da564e0e9c0ced4847433b",
         "environment": "dev",
@@ -353,6 +363,6 @@
       }
     }
   },
-  "last_updated": "2025-07-14T15:25:21.519524",
+  "last_updated": "2025-07-14T15:31:00.225735",
   "version": "1.0"
 }
