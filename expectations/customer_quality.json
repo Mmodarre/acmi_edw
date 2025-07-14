@@ -14,7 +14,7 @@
     },
     {
       "name": "valid_nation_key",
-      "expression": "nationkey IS NOT NULL AND nationkey >= 0",
+      "expression": "nation_id IS NOT NULL AND nation_id >= 0",
       "failureAction": "fail"
     },
     {
@@ -29,7 +29,7 @@
     },
     {
       "name": "valid_market_segment",
-      "expression": "mktsegment IS NULL OR mktsegment IN ('BUILDING', 'FURNITURE', 'HOUSEHOLD', 'MACHINERY')",
+      "expression": "market_segment IS NULL OR market_segment IN ('BUILDING', 'FURNITURE', 'HOUSEHOLD', 'MACHINERY')",
       "failureAction": "warn"
     }
   ]

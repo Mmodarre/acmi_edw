@@ -221,292 +221,277 @@ lhp generate --env dev
 
 ## Gold Layer Table Structures
 
-Based on the silver layer tables, here are suggested gold layer table structures organized by business domains:
+The gold layer contains business-ready analytics tables implemented as materialized views. Here are the currently implemented gold layer tables:
 
 ### 📊 **Sales & Revenue Analytics**
 
-#### `sales_summary_daily`
+#### `sales_summary_daily_mv`
 ```sql
 -- Daily sales performance metrics
 SELECT 
     order_date,
-    COUNT(DISTINCT order_id) as total_orders,
-    COUNT(DISTINCT customer_id) as unique_customers,
+    COUNT(DISTINCT o.order_id) as total_orders,
+    COUNT(DISTINCT c.customer_id) as unique_customers,
     SUM(total_price) as total_revenue,
     AVG(total_price) as avg_order_value,
     SUM(CASE WHEN order_status = 'F' THEN 1 ELSE 0 END) as fulfilled_orders,
     SUM(CASE WHEN order_status = 'O' THEN 1 ELSE 0 END) as open_orders
-FROM orders_silver_fct o
-JOIN customer_silver_dim c ON o.customer_id = c.customer_id
+FROM {catalog}.{silver_schema}.orders_fct o
+JOIN {catalog}.{silver_schema}.customer_dim c ON o.customer_id = c.customer_id
 GROUP BY order_date
 ```
 
-#### `sales_summary_monthly`
+#### `sales_summary_monthly_mv`
 ```sql
--- Monthly sales aggregations with year-over-year growth
+-- Monthly sales aggregations
 SELECT 
     YEAR(order_date) as year,
     MONTH(order_date) as month,
     SUM(total_price) as monthly_revenue,
-    COUNT(DISTINCT order_id) as monthly_orders,
-    COUNT(DISTINCT customer_id) as monthly_customers,
+    COUNT(DISTINCT o.order_id) as monthly_orders,
+    COUNT(DISTINCT c.customer_id) as monthly_customers,
     AVG(total_price) as avg_monthly_order_value
-FROM orders_silver_fct
+FROM {catalog}.{silver_schema}.orders_fct o
 GROUP BY YEAR(order_date), MONTH(order_date)
 ```
 
-#### `revenue_by_region`
+#### `revenue_by_region_mv`
 ```sql
 -- Revenue analysis by geographic region
 SELECT 
-    r.region_name,
-    n.nation_name,
+    r.name as region_name,
+    n.name as nation_name,
     DATE_TRUNC('month', o.order_date) as month,
     SUM(o.total_price) as region_revenue,
     COUNT(DISTINCT o.order_id) as region_orders,
     COUNT(DISTINCT c.customer_id) as region_customers
-FROM orders_silver_fct o
-JOIN customer_silver_dim c ON o.customer_id = c.customer_id
-JOIN nation_silver_dim n ON c.nation_key = n.nation_key
-JOIN region_silver_dim r ON n.region_key = r.region_key
-GROUP BY r.region_name, n.nation_name, DATE_TRUNC('month', o.order_date)
+FROM {catalog}.{silver_schema}.orders_fct o
+JOIN {catalog}.{silver_schema}.customer_dim c ON o.customer_id = c.customer_id
+JOIN {catalog}.{silver_schema}.nation_dim n ON c.nation_id = n.nation_id
+JOIN {catalog}.{silver_schema}.region_dim r ON n.region_id = r.region_id
+GROUP BY r.name, n.name, DATE_TRUNC('month', o.order_date)
 ```
 
 ### 🛒 **Customer Analytics**
 
-#### `customer_lifetime_value`
+#### `customer_lifetime_value_mv`
 ```sql
 -- Customer lifetime value and behavior metrics
 SELECT 
     c.customer_id,
     c.name as customer_name,
     c.market_segment,
-    n.nation_name,
+    n.name as nation,
     COUNT(DISTINCT o.order_id) as total_orders,
     SUM(o.total_price) as lifetime_value,
     AVG(o.total_price) as avg_order_value,
     MIN(o.order_date) as first_order_date,
     MAX(o.order_date) as last_order_date,
     DATEDIFF(MAX(o.order_date), MIN(o.order_date)) as customer_tenure_days
-FROM customer_silver_dim c
-JOIN orders_silver_fct o ON c.customer_id = o.customer_id
-JOIN nation_silver_dim n ON c.nation_key = n.nation_key
-GROUP BY c.customer_id, c.name, c.market_segment, n.nation_name
+FROM {catalog}.{silver_schema}.customer_dim c
+JOIN {catalog}.{silver_schema}.orders_fct o ON c.customer_id = o.customer_id
+JOIN {catalog}.{silver_schema}.nation_dim n ON c.nation_id = n.nation_id
+GROUP BY c.customer_id, c.name, c.market_segment, n.name
 ```
 
-#### `customer_segmentation`
-```sql
--- RFM (Recency, Frequency, Monetary) customer segmentation
-SELECT 
-    customer_id,
-    customer_name,
-    market_segment,
-    recency_score,
-    frequency_score,
-    monetary_score,
-    CASE 
-        WHEN recency_score >= 4 AND frequency_score >= 4 AND monetary_score >= 4 THEN 'Champions'
-        WHEN recency_score >= 3 AND frequency_score >= 3 AND monetary_score >= 3 THEN 'Loyal Customers'
-        WHEN recency_score >= 3 AND frequency_score >= 2 THEN 'Potential Loyalists'
-        WHEN recency_score >= 4 AND frequency_score <= 1 THEN 'New Customers'
-        WHEN recency_score <= 2 AND frequency_score >= 2 THEN 'At Risk'
-        WHEN recency_score <= 1 AND frequency_score <= 1 THEN 'Lost Customers'
-        ELSE 'Others'
-    END as customer_segment
-FROM customer_lifetime_value
-```
+### 📦 **Product Analytics**
 
-### 📦 **Product & Inventory Analytics**
-
-#### `product_performance`
+#### `product_performance_mv`
 ```sql
--- Product sales performance and popularity metrics
+-- Product sales performance and popularity metrics by month
 SELECT 
     p.part_key,
     p.name as product_name,
     p.manufacturer,
     p.brand,
     p.type,
-    p.size,
     COUNT(DISTINCT l.order_key) as orders_count,
     SUM(l.quantity) as total_quantity_sold,
     SUM(l.extended_price) as total_revenue,
     AVG(l.extended_price / l.quantity) as avg_unit_price,
     SUM(l.extended_price * l.discount) as total_discount_given,
-    AVG(l.discount) as avg_discount_rate
-FROM part_silver_dim p
-JOIN lineitem_silver_fct l ON p.part_key = l.part_key
-GROUP BY p.part_key, p.name, p.manufacturer, p.brand, p.type, p.size
+    AVG(l.discount) as avg_discount_rate,
+    DATE_TRUNC('month', o.order_date) as month
+FROM {catalog}.{silver_schema}.part_dim p
+JOIN {catalog}.{silver_schema}.lineitem_fct l ON p.part_key = l.part_key
+JOIN {catalog}.{silver_schema}.orders_fct o ON l.order_key = o.order_key
+GROUP BY p.part_key, p.name, p.manufacturer, p.brand, p.type, DATE_TRUNC('month', o.order_date)
 ```
 
-#### `supplier_performance`
+### 🎯 **Executive Dashboard (Composite MV)**
+
+#### `executive_dashboard_mv`
 ```sql
--- Supplier performance metrics
+-- Executive dashboard that reads from multiple existing MVs
+WITH monthly_sales AS (
+  SELECT 
+    year, month, monthly_revenue, monthly_orders, monthly_customers,
+    LAG(monthly_revenue, 1) OVER (ORDER BY year, month) as prev_month_revenue,
+    LAG(monthly_orders, 1) OVER (ORDER BY year, month) as prev_month_orders
+  FROM {catalog}.{gold_schema}.sales_summary_monthly_mv
+),
+regional_performance AS (
+  SELECT 
+    month, COUNT(DISTINCT region_name) as active_regions,
+    SUM(region_revenue) as total_regional_revenue,
+    AVG(region_revenue) as avg_regional_revenue
+  FROM {catalog}.{gold_schema}.revenue_by_region_mv
+  GROUP BY month
+),
+customer_metrics AS (
+  SELECT 
+    COUNT(*) as total_customers,
+    AVG(lifetime_value) as avg_customer_lifetime_value,
+    AVG(total_orders) as avg_orders_per_customer
+  FROM {catalog}.{gold_schema}.customer_lifetime_value_mv
+),
+top_products AS (
+  SELECT 
+    month, COUNT(DISTINCT part_key) as active_products,
+    SUM(total_revenue) as product_revenue,
+    SUM(total_quantity_sold) as total_units_sold
+  FROM {catalog}.{gold_schema}.product_performance_mv
+  GROUP BY month
+)
 SELECT 
-    s.supplier_key,
-    s.name as supplier_name,
-    s.nation_name,
-    COUNT(DISTINCT l.order_key) as orders_fulfilled,
-    SUM(l.quantity) as total_quantity_supplied,
-    SUM(l.extended_price) as total_revenue_generated,
-    AVG(DATEDIFF(l.receipt_date, l.commit_date)) as avg_delivery_days,
-    SUM(CASE WHEN l.receipt_date > l.commit_date THEN 1 ELSE 0 END) as late_deliveries,
-    COUNT(*) as total_line_items
-FROM supplier_silver_dim s
-JOIN lineitem_silver_fct l ON s.supplier_key = l.supplier_key
-GROUP BY s.supplier_key, s.name, s.nation_name
+  ms.year, ms.month,
+  ms.monthly_revenue, ms.prev_month_revenue,
+  -- Growth calculations
+  CASE WHEN ms.prev_month_revenue > 0 THEN 
+    ROUND((ms.monthly_revenue - ms.prev_month_revenue) / ms.prev_month_revenue * 100, 2)
+  ELSE NULL END as revenue_growth_pct,
+  -- Combined metrics from all MVs
+  ms.monthly_orders, ms.monthly_customers,
+  cm.avg_customer_lifetime_value, cm.avg_orders_per_customer,
+  rp.active_regions, rp.total_regional_revenue,
+  tp.active_products, tp.product_revenue,
+  -- Executive KPIs
+  ROUND(ms.monthly_revenue / ms.monthly_customers, 2) as revenue_per_customer,
+  ROUND(ms.monthly_revenue / ms.monthly_orders, 2) as revenue_per_order,
+  CURRENT_TIMESTAMP() as dashboard_updated_at
+FROM monthly_sales ms
+LEFT JOIN regional_performance rp ON ms.year = YEAR(rp.month) AND ms.month = MONTH(rp.month)
+LEFT JOIN top_products tp ON ms.year = YEAR(tp.month) AND ms.month = MONTH(tp.month)
+CROSS JOIN customer_metrics cm
+WHERE ms.year >= YEAR(DATE_SUB(CURRENT_DATE(), INTERVAL 24 MONTH))
+ORDER BY ms.year, ms.month
 ```
 
-### 📈 **Time Series Analytics**
-
-#### `daily_business_metrics`
+#### `customer_segmentation_mv`
 ```sql
--- Daily business KPIs dashboard
+-- RFM customer segmentation that reads from customer_lifetime_value_mv
+WITH customer_scores AS (
+  SELECT 
+    customer_id, customer_name, market_segment, nation,
+    lifetime_value, total_orders, avg_order_value, customer_tenure_days,
+    
+    -- Calculate recency score (days since last order)
+    CASE 
+      WHEN DATEDIFF(CURRENT_DATE(), last_order_date) <= 30 THEN 5
+      WHEN DATEDIFF(CURRENT_DATE(), last_order_date) <= 90 THEN 4
+      WHEN DATEDIFF(CURRENT_DATE(), last_order_date) <= 180 THEN 3
+      WHEN DATEDIFF(CURRENT_DATE(), last_order_date) <= 365 THEN 2
+      ELSE 1
+    END as recency_score,
+    
+    -- Calculate frequency score (number of orders)
+    CASE 
+      WHEN total_orders >= 10 THEN 5
+      WHEN total_orders >= 5 THEN 4
+      WHEN total_orders >= 3 THEN 3
+      WHEN total_orders >= 2 THEN 2
+      ELSE 1
+    END as frequency_score,
+    
+    -- Calculate monetary score (lifetime value)
+    CASE 
+      WHEN lifetime_value >= 10000 THEN 5
+      WHEN lifetime_value >= 5000 THEN 4
+      WHEN lifetime_value >= 2000 THEN 3
+      WHEN lifetime_value >= 500 THEN 2
+      ELSE 1
+    END as monetary_score
+    
+  FROM {catalog}.{gold_schema}.customer_lifetime_value_mv
+)
 SELECT 
-    DATE(order_date) as business_date,
-    COUNT(DISTINCT order_id) as daily_orders,
-    SUM(total_price) as daily_revenue,
-    COUNT(DISTINCT customer_id) as daily_unique_customers,
-    AVG(total_price) as daily_avg_order_value,
-    SUM(total_price) / COUNT(DISTINCT customer_id) as revenue_per_customer,
-    LAG(SUM(total_price), 1) OVER (ORDER BY DATE(order_date)) as prev_day_revenue,
-    (SUM(total_price) - LAG(SUM(total_price), 1) OVER (ORDER BY DATE(order_date))) / 
-    LAG(SUM(total_price), 1) OVER (ORDER BY DATE(order_date)) * 100 as revenue_growth_pct
-FROM orders_silver_fct
-GROUP BY DATE(order_date)
+  customer_id, customer_name, market_segment, nation,
+  lifetime_value, total_orders, avg_order_value, customer_tenure_days,
+  recency_score, frequency_score, monetary_score,
+  CONCAT(recency_score, frequency_score, monetary_score) as rfm_score,
+  
+  -- Customer segment based on RFM analysis
+  CASE 
+    WHEN recency_score >= 4 AND frequency_score >= 4 AND monetary_score >= 4 THEN 'Champions'
+    WHEN recency_score >= 3 AND frequency_score >= 3 AND monetary_score >= 3 THEN 'Loyal Customers'
+    WHEN recency_score >= 4 AND frequency_score >= 2 AND monetary_score >= 2 THEN 'Potential Loyalists'
+    WHEN recency_score >= 4 AND frequency_score <= 1 AND monetary_score <= 2 THEN 'New Customers'
+    WHEN recency_score <= 2 AND frequency_score >= 2 AND monetary_score >= 3 THEN 'At Risk'
+    WHEN recency_score <= 1 AND frequency_score >= 3 AND monetary_score >= 4 THEN 'Cannot Lose Them'
+    WHEN recency_score <= 1 AND frequency_score <= 1 AND monetary_score <= 2 THEN 'Hibernating'
+    ELSE 'Others'
+  END as customer_segment,
+  
+  -- Segment priority (1 = highest priority)
+  CASE 
+    WHEN recency_score >= 4 AND frequency_score >= 4 AND monetary_score >= 4 THEN 1  -- Champions
+    WHEN recency_score <= 1 AND frequency_score >= 3 AND monetary_score >= 4 THEN 2  -- Cannot Lose Them
+    WHEN recency_score <= 2 AND frequency_score >= 2 AND monetary_score >= 3 THEN 3  -- At Risk
+    ELSE 4
+  END as segment_priority,
+  
+  CURRENT_TIMESTAMP() as segmentation_updated_at
+  
+FROM customer_scores
+ORDER BY segment_priority, lifetime_value DESC
 ```
 
-#### `seasonal_trends`
-```sql
--- Seasonal and cyclical trend analysis
-SELECT 
-    YEAR(order_date) as year,
-    QUARTER(order_date) as quarter,
-    MONTH(order_date) as month,
-    DAYOFWEEK(order_date) as day_of_week,
-    SUM(total_price) as period_revenue,
-    COUNT(DISTINCT order_id) as period_orders,
-    AVG(total_price) as avg_order_value,
-    SUM(total_price) / SUM(SUM(total_price)) OVER (PARTITION BY YEAR(order_date)) * 100 as revenue_contribution_pct
-FROM orders_silver_fct
-GROUP BY YEAR(order_date), QUARTER(order_date), MONTH(order_date), DAYOFWEEK(order_date)
+### 📋 **Implementation Details**
+
+All gold layer tables are implemented as **materialized views** using the `gold_load` pipeline:
+
+#### Base Materialized Views (Read from Silver Layer)
+| Table | Type | Pipeline | Description |
+|-------|------|----------|-------------|
+| `sales_summary_daily_mv` | Materialized View | `gold_load` | Daily sales KPIs |
+| `sales_summary_monthly_mv` | Materialized View | `gold_load` | Monthly sales aggregations |
+| `revenue_by_region_mv` | Materialized View | `gold_load` | Regional revenue analysis |
+| `customer_lifetime_value_mv` | Materialized View | `gold_load` | Customer behavior metrics |
+| `product_performance_mv` | Materialized View | `gold_load` | Product performance metrics |
+
+#### Composite Materialized Views (Read from Other Gold MVs)
+| Table | Type | Pipeline | Description | Source MVs |
+|-------|------|----------|-------------|------------|
+| `executive_dashboard_mv` | Materialized View | `gold_load` | Executive dashboard with combined KPIs | `sales_summary_monthly_mv`, `revenue_by_region_mv`, `customer_lifetime_value_mv`, `product_performance_mv` |
+| `customer_segmentation_mv` | Materialized View | `gold_load` | RFM customer segmentation analysis | `customer_lifetime_value_mv` |
+
+### 🏗️ **Layered MV Architecture**
+
+This project demonstrates a **layered materialized view architecture**:
+
+```
+Silver Layer (Source Tables)
+    ↓
+Base Gold MVs (Read from Silver)
+    ↓
+Composite Gold MVs (Read from Base MVs)
+    ↓
+Analytics & Dashboards
 ```
 
-### 💰 **Financial Analytics**
-
-#### `profitability_analysis`
-```sql
--- Profit margins and cost analysis
-SELECT 
-    p.manufacturer,
-    p.brand,
-    p.type,
-    SUM(l.extended_price) as gross_revenue,
-    SUM(l.extended_price * l.discount) as total_discounts,
-    SUM(l.extended_price * (1 - l.discount)) as net_revenue,
-    SUM(l.extended_price * l.tax) as total_taxes,
-    SUM(ps.supply_cost * l.quantity) as total_supply_cost,
-    SUM(l.extended_price * (1 - l.discount) - ps.supply_cost * l.quantity) as gross_profit,
-    AVG((l.extended_price * (1 - l.discount) - ps.supply_cost * l.quantity) / l.extended_price) as profit_margin_pct
-FROM lineitem_silver_fct l
-JOIN part_silver_dim p ON l.part_key = p.part_key
-JOIN partsupp_silver_dim ps ON l.part_key = ps.part_key AND l.supplier_key = ps.supplier_key
-GROUP BY p.manufacturer, p.brand, p.type
-```
-
-#### `cash_flow_analysis`
-```sql
--- Cash flow and payment analysis
-SELECT 
-    DATE_TRUNC('month', order_date) as month,
-    SUM(CASE WHEN order_status = 'F' THEN total_price ELSE 0 END) as cash_received,
-    SUM(CASE WHEN order_status = 'O' THEN total_price ELSE 0 END) as pending_receivables,
-    SUM(CASE WHEN order_status = 'P' THEN total_price ELSE 0 END) as processing_orders,
-    SUM(total_price) as total_bookings,
-    COUNT(CASE WHEN order_status = 'F' THEN order_id END) as fulfilled_orders,
-    COUNT(CASE WHEN order_status = 'O' THEN order_id END) as open_orders
-FROM orders_silver_fct
-GROUP BY DATE_TRUNC('month', order_date)
-```
-
-### 🔍 **Operational Analytics**
-
-#### `order_fulfillment_metrics`
-```sql
--- Order processing and fulfillment performance
-SELECT 
-    order_priority,
-    shipping_priority,
-    AVG(DATEDIFF(ship_date, order_date)) as avg_processing_days,
-    AVG(DATEDIFF(receipt_date, ship_date)) as avg_shipping_days,
-    AVG(DATEDIFF(receipt_date, order_date)) as avg_total_fulfillment_days,
-    COUNT(*) as total_line_items,
-    SUM(CASE WHEN return_flag = 'R' THEN 1 ELSE 0 END) as returned_items,
-    SUM(CASE WHEN return_flag = 'R' THEN 1 ELSE 0 END) / COUNT(*) * 100 as return_rate_pct
-FROM lineitem_silver_fct l
-JOIN orders_silver_fct o ON l.order_key = o.order_key
-GROUP BY order_priority, shipping_priority
-```
-
-#### `inventory_turnover`
-```sql
--- Inventory turnover and demand forecasting
-SELECT 
-    p.part_key,
-    p.name as product_name,
-    p.manufacturer,
-    ps.available_quantity,
-    SUM(l.quantity) as total_sold,
-    ps.available_quantity / NULLIF(SUM(l.quantity), 0) as inventory_turnover_ratio,
-    COUNT(DISTINCT DATE_TRUNC('month', l.ship_date)) as months_active,
-    SUM(l.quantity) / COUNT(DISTINCT DATE_TRUNC('month', l.ship_date)) as avg_monthly_demand
-FROM part_silver_dim p
-JOIN partsupp_silver_dim ps ON p.part_key = ps.part_key
-JOIN lineitem_silver_fct l ON p.part_key = l.part_key
-GROUP BY p.part_key, p.name, p.manufacturer, ps.available_quantity
-```
-
-### 🎯 **Executive Dashboard**
-
-#### `executive_summary`
-```sql
--- High-level executive KPIs
-SELECT 
-    'Total Revenue' as metric,
-    SUM(total_price) as current_value,
-    LAG(SUM(total_price), 1) OVER (ORDER BY DATE_TRUNC('month', order_date)) as previous_value
-FROM orders_silver_fct
-WHERE order_date >= DATE_SUB(CURRENT_DATE(), 90)
-GROUP BY DATE_TRUNC('month', order_date)
-
-UNION ALL
-
-SELECT 
-    'Total Orders' as metric,
-    COUNT(DISTINCT order_id) as current_value,
-    LAG(COUNT(DISTINCT order_id), 1) OVER (ORDER BY DATE_TRUNC('month', order_date)) as previous_value
-FROM orders_silver_fct
-WHERE order_date >= DATE_SUB(CURRENT_DATE(), 90)
-GROUP BY DATE_TRUNC('month', order_date)
-```
-
-### 📋 **Implementation Guidelines**
-
-1. **Incremental Updates**: Use Delta Lake's merge capabilities for efficient updates
-2. **Partitioning**: Partition by date columns for time-based queries
-3. **Indexing**: Create appropriate Z-order indexes for frequent query patterns
-4. **Materialized Views**: Consider materialized views for frequently accessed aggregations
-5. **Refresh Strategy**: Implement appropriate refresh schedules based on business needs
-6. **Data Retention**: Define retention policies for historical data
+**Benefits:**
+- **Modular Design**: Each MV has a specific purpose and can be reused
+- **Performance**: Composite MVs pre-aggregate data from multiple sources
+- **Maintainability**: Changes to base MVs automatically propagate to composite MVs
+- **Flexibility**: Easy to create new composite views for different use cases
 
 ### 💡 **Gold Layer Best Practices**
 
-- **Business-Centric**: Design tables around business questions and KPIs
-- **Denormalized**: Pre-join frequently used tables for query performance
-- **Aggregated**: Pre-calculate common aggregations and metrics
-- **Partitioned**: Use appropriate partitioning for time-series data
-- **Documented**: Include clear descriptions and business definitions
-- **Monitored**: Track usage patterns and query performance
+- **Materialized Views**: All tables use materialized views for optimal query performance
+- **Business-Centric**: Tables are designed around specific business questions and KPIs
+- **Denormalized**: Pre-joined tables eliminate complex joins during analysis
+- **Aggregated**: Pre-calculated metrics for fast dashboard queries
+- **Consistent Naming**: All tables use `_mv` suffix to indicate materialized views
 
 ## Data Sources and Formats
 
