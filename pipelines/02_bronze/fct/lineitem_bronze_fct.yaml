@@ -1,7 +1,13 @@
+# This pipeline is used to load the lineitem table from the raw schema into the bronze schema
+# Pipeline variable puts the generate files in the same folder for the pipeline to pick up
 pipeline: bronze_load
+# Flowgroup are conceptual artifacts and has no functional purpose
+# there are used to group actions together in the generated files
 flowgroup: lineitem_bronze_fct
 
 actions:
+  # Load is not neceseary here as everything is in the same pipeline
+  # but it kept in case we decide to split the pipelines
   - name: lineitem_raw_load
     type: load
     operational_metadata: ["_processing_timestamp"]
@@ -10,13 +16,13 @@ actions:
       type: delta
       database: "{catalog}.{raw_schema}"
       table: lineitem
-    target: v_lineitem_bronze
+    target: v_lineitem_raw
     description: "Load lineitem table from raw schema" 
 
   - name: lineitem_bronze_cleanse
     type: transform
     transform_type: sql
-    source: v_lineitem_bronze
+    source: v_lineitem_raw
     target: v_lineitem_bronze_cleaned
     sql: |
       SELECT 
@@ -41,7 +47,7 @@ actions:
         _source_file_modification_time,
         _record_hash,
         _processing_timestamp
-      FROM stream(v_lineitem_bronze)
+      FROM stream(v_lineitem_raw)
 
   - name: lineitem_bronze_DQE
     type: transform
@@ -58,14 +64,5 @@ actions:
     write_target:
       type: streaming_table
       database: "{catalog}.{bronze_schema}"
-      table: "lineitem_fct"
-      mode: "cdc"
-      
-      # CDC configuration
-      ## SCD Type 1 for deduplication, no history table
-      cdc_config:
-        keys: ["order_id"]
-        sequence_by: "_source_file_modification_time"
-        scd_type: 1
-        track_history_except_column_list: ["_source_file_path", "_source_file_size", "_source_file_modification_time", "_record_hash", "_processing_timestamp"]
+      table: "lineitem"
         

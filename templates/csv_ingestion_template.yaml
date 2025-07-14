@@ -1,3 +1,8 @@
+# This is a template for ingesting CSV files with schema enforcement
+# It is used to generate the actions for the pipeline
+# within the pipeline all it need to defined are the parameters for the table name and landing folder
+# the template will generate the actions for the pipeline
+
 name: csv_ingestion_template
 version: "1.0"
 description: "Standard template for ingesting CSV files with schema enforcement"
@@ -35,11 +40,11 @@ actions:
     target: v_{{ table_name }}_raw
     description: "Load {{ table_name }} CSV files from landing volume"
 
-  - name: write_{{ table_name }}_bronze
+  - name: write_{{ table_name }}_raw
     type: write
     source: v_{{ table_name }}_raw
     write_target:
       type: streaming_table
       database: "{catalog}.{raw_schema}"
       table: "{{ table_name }}"
-      description: "Write {{ table_name }} to bronze layer" 
+      description: "Write {{ table_name }} to raw layer" 

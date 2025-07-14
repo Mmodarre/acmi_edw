@@ -1,4 +1,8 @@
+# This pipeline is used to load the nation table from the raw schema into the bronze schema
+# Pipeline variable puts the generate files in the same folder for the pipeline to pick up
 pipeline: bronze_load
+# Flowgroup are conceptual artifacts and has no functional purpose
+# there are used to group actions together in the generated files
 flowgroup: nation_bronze_dim
 
 actions:
@@ -10,13 +14,13 @@ actions:
       type: delta
       database: "{catalog}.{raw_schema}"
       table: nation
-    target: v_nation_bronze
+    target: v_nation_raw
     description: "Load nation table from raw schema" 
 
   - name: nation_bronze_cleanse
     type: transform
     transform_type: sql
-    source: v_nation_bronze
+    source: v_nation_raw
     target: v_nation_bronze_cleaned
     sql: |
       SELECT 
@@ -29,7 +33,7 @@ actions:
         _source_file_modification_time,
         _record_hash,
         _processing_timestamp
-      FROM stream(v_nation_bronze)
+      FROM stream(v_nation_raw)
 
 
   - name: write_nation_bronze
@@ -39,13 +43,3 @@ actions:
       type: streaming_table
       database: "{catalog}.{bronze_schema}"
       table: "nation_dim"
-      mode: "cdc"
-      
-      # CDC configuration
-      cdc_config:
-        keys: ["nation_id"]
-        sequence_by: "_source_file_modification_time"
-        scd_type: 2
-        ignore_null_updates: false
-        track_history_except_column_list: ["_source_file_path", "_source_file_size", "_source_file_modification_time", "_record_hash", "_processing_timestamp"]
-        

@@ -1,7 +1,7 @@
-# This file is used to define the substitutions for the dev environment
-# on the cli when we use the flag -e dev this file is used to define the environment variables
-# and the secrets to use for the dev environment
-dev:
+# This file is used to define the substitutions for the tst environment
+# on the cli when we use the flag -e tst this file is used to define the environment variables
+# and the secrets to use for the tst environment
+tst:
   env: dev
   catalog: acmi_edw_dev
   landing_volume: /Volumes/{catalog}/{raw_schema}/landing_volume
@@ -11,9 +11,9 @@ dev:
   gold_schema: edw_gold
   
 secrets:
-  default_scope: dev_secrets
+  default_scope: tst_secrets
   scopes:
-    database: dev_db_secrets
+    database: tst_db_secrets
 
 
 
