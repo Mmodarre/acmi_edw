@@ -342,14 +342,14 @@
         "timestamp": "2025-07-14T15:51:27.409750"
       },
       "generated/04_gold/executive_dashboard_mv.py": {
-        "checksum": "b5921bca3b7f80924a14a4213c22f6206ad3dbc6668a256400a295e3c85a127a",
+        "checksum": "1bf1947cb2d90b3e7b794c0b5863949316ab16af0a655f337f3d7fccbb2dc70b",
         "environment": "dev",
         "flowgroup": "executive_dashboard_mv",
         "generated_path": "generated/04_gold/executive_dashboard_mv.py",
         "pipeline": "04_gold",
         "source_yaml": "pipelines/04_gold/executive_dashboard_mv.yaml",
-        "source_yaml_checksum": "d85decf4bc591e16ce3dccf65d2e535941fc9238b9261caf2df6bbde9acc2f3d",
-        "timestamp": "2025-07-14T16:04:41.964777"
+        "source_yaml_checksum": "7e1d83df1d0e6721d20b4f48eb8f4ea8d4cd0a34310451b55d66e58c2edb39e3",
+        "timestamp": "2025-07-14T16:11:20.444177"
       },
       "generated/04_gold/product_performance_mv.py": {
         "checksum": "e2ea58c8f806987429cf36e7af1e441242d4185ea5dd9398e7b1328a30119bec",
@@ -393,6 +393,6 @@
       }
     }
   },
-  "last_updated": "2025-07-14T16:04:41.965576",
+  "last_updated": "2025-07-14T16:11:20.444846",
   "version": "1.0"
 }
