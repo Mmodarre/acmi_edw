@@ -1,3 +1,208 @@
+# ACMI EDW - Lakehouse Plumber Sample Project
+
+A **LakehousePlumber** Delta Live Tables (DLT) pipeline project for processing TPC-H benchmark data using a medallion architecture.
+
+## Overview
+
+This project implements a complete data lakehouse solution for the TPC-H benchmark dataset using [**LakehousePlumber (lhp)**](https://github.com/Mmodarre/Lakehouse_Plumber) to generate Delta Live Tables pipelines. The project follows a medallion architecture pattern with **raw ingestion**, **bronze**, **silver**, and **gold** layers.
+
+The solution processes 8 core TPC-H tables:
+- `customer` - Customer dimension data
+- `lineitem` - Order line items fact data  
+- `nation` - Nation dimension data
+- `orders` - Orders fact data
+- `part` - Part dimension data
+- `partsupp` - Part supplier dimension data
+- `region` - Region dimension data
+- `supplier` - Supplier dimension data
+
+## Todo
+
+- [ ] Add Applend flow with multiple sources writing to the same table (for now using append_flow for single source to each table)
+- [ ] Add once=True for nation and region tables (for now using Auto_cdc_flow)
+- [ ] Add presets demonstration (currently presets are not used)
+- [ ] Add SQL file for SQL queries (for now using inline SQL queries in the pipeline)
+- [ ] Add Python transformation for demonstration.
+
+## Architecture
+
+### Data Flow Architecture
+
+The following diagrams show the data flow architecture across all four layers of the medallion architecture.
+
+### 🔄 **End-to-End Data Flow**
+
+```mermaid
+graph LR
+    %% Data Sources
+    Sources["📄 Data Sources<br/>(CSV, JSON, Parquet)"]
+    
+    %% Layer 1: Raw
+    subgraph "Layer 1: Raw Ingestion"
+        Raw_Pipeline["raw_ingestions<br/>Pipeline"]
+        Raw_Tables["8 Raw Tables<br/>(edw_raw)"]
+    end
+    
+    %% Layer 2: Bronze
+    subgraph "Layer 2: Bronze"
+        Bronze_Pipeline["bronze_load<br/>Pipeline"]
+        Bronze_Tables["8 Bronze Tables<br/>(edw_bronze)<br/>Data Quality + Cleansing"]
+    end
+    
+    %% Layer 3: Silver
+    subgraph "Layer 3: Silver"
+        Silver_Pipeline["silver_load<br/>Pipeline"]
+        Silver_Dims["6 Dimension Tables<br/>(SCD Type 2)"]
+        Silver_Facts["2 Fact Tables<br/>(SCD Type 1)"]
+    end
+    
+    %% Layer 4: Gold
+    subgraph "Layer 4: Gold"
+        Gold_Pipeline["gold_load<br/>Pipeline"]
+        Base_MVs["5 Base MVs<br/>(Analytics Ready)"]
+        Composite_MVs["2 Composite MVs<br/>(Executive + Segmentation)"]
+    end
+    
+    %% Analytics
+    Analytics["📊 Analytics & Dashboards"]
+    
+    %% Connections
+    Sources --> Raw_Pipeline --> Raw_Tables
+    Raw_Tables --> Bronze_Pipeline --> Bronze_Tables
+    Bronze_Tables --> Silver_Pipeline
+    Silver_Pipeline --> Silver_Dims
+    Silver_Pipeline --> Silver_Facts
+    Silver_Dims --> Gold_Pipeline
+    Silver_Facts --> Gold_Pipeline
+    Gold_Pipeline --> Base_MVs
+    Base_MVs --> Composite_MVs
+    Composite_MVs --> Analytics
+    Base_MVs --> Analytics
+    
+    style Sources fill:#2196F3,stroke:#1976D2,stroke-width:2px,color:#fff
+    style Raw_Tables fill:#42A5F5,stroke:#1976D2,stroke-width:2px,color:#fff
+    style Bronze_Tables fill:#FF9800,stroke:#F57C00,stroke-width:2px,color:#fff
+    style Silver_Dims fill:#4CAF50,stroke:#388E3C,stroke-width:2px,color:#fff
+    style Silver_Facts fill:#00BCD4,stroke:#0097A7,stroke-width:2px,color:#fff
+    style Base_MVs fill:#9C27B0,stroke:#7B1FA2,stroke-width:2px,color:#fff
+    style Composite_MVs fill:#E91E63,stroke:#C2185B,stroke-width:2px,color:#fff
+    style Analytics fill:#673AB7,stroke:#512DA8,stroke-width:2px,color:#fff
+```
+
+### 🔸 **Raw Ingestion Layer (`raw_ingestions` pipeline)**
+
+```mermaid
+graph TD
+    %% Data Sources
+    CSV_Files["📄 CSV Files<br/>(customer, lineitem, nation, orders)"]
+    JSON_Files["📋 JSON Files<br/>(part, partsupp)"]
+    Parquet_Files["📊 Parquet Files<br/>(region, supplier)"]
+    
+    %% Raw Ingestion Pipeline
+    subgraph "Raw Ingestion Pipeline (raw_ingestions)"
+        CSV_Ingestion["🔄 CSV Ingestion Template"]
+        JSON_Ingestion["🔄 JSON Ingestion Template"]
+        Parquet_Ingestion["🔄 Parquet Ingestion Template"]
+    end
+    
+    %% Raw Tables
+    subgraph "Raw Schema (edw_raw)"
+        Customer_Raw["customer"]
+        Lineitem_Raw["lineitem"]
+        Nation_Raw["nation"]
+        Orders_Raw["orders"]
+        Part_Raw["part"]
+        Partsupp_Raw["partsupp"]
+        Region_Raw["region"]
+        Supplier_Raw["supplier"]
+    end
+    
+    %% Connections
+    CSV_Files --> CSV_Ingestion
+    JSON_Files --> JSON_Ingestion
+    Parquet_Files --> Parquet_Ingestion
+    
+    CSV_Ingestion --> Customer_Raw
+    CSV_Ingestion --> Lineitem_Raw
+    CSV_Ingestion --> Nation_Raw
+    CSV_Ingestion --> Orders_Raw
+    
+    JSON_Ingestion --> Part_Raw
+    JSON_Ingestion --> Partsupp_Raw
+    
+    Parquet_Ingestion --> Region_Raw
+    Parquet_Ingestion --> Supplier_Raw
+    
+    style CSV_Files fill:#1976D2,stroke:#0D47A1,stroke-width:2px,color:#fff
+    style JSON_Files fill:#7B1FA2,stroke:#4A148C,stroke-width:2px,color:#fff
+    style Parquet_Files fill:#388E3C,stroke:#1B5E20,stroke-width:2px,color:#fff
+    style CSV_Ingestion fill:#2196F3,stroke:#1976D2,stroke-width:2px,color:#fff
+    style JSON_Ingestion fill:#9C27B0,stroke:#7B1FA2,stroke-width:2px,color:#fff
+    style Parquet_Ingestion fill:#4CAF50,stroke:#388E3C,stroke-width:2px,color:#fff
+```
+
+### 🟡 **Bronze Layer (`bronze_load` pipeline)**
+
+```mermaid
+graph TD
+    %% Raw Schema
+    subgraph "Raw Schema (edw_raw)"
+        Customer_Raw["customer"]
+        Lineitem_Raw["lineitem"]
+        Nation_Raw["nation"]
+        Orders_Raw["orders"]
+        Part_Raw["part"]
+        Partsupp_Raw["partsupp"]
+        Region_Raw["region"]
+        Supplier_Raw["supplier"]
+    end
+    
+    %% Bronze Pipeline
+    subgraph "Bronze Pipeline (bronze_load)"
+        Customer_Bronze_Flow["🔄 customer_bronze"]
+        Lineitem_Bronze_Flow["🔄 lineitem_bronze"]
+        Nation_Bronze_Flow["🔄 nation_bronze"]
+        Orders_Bronze_Flow["🔄 orders_bronze"]
+        Part_Bronze_Flow["🔄 part_bronze"]
+        Partsupp_Bronze_Flow["🔄 partsupp_bronze"]
+        Region_Bronze_Flow["🔄 region_bronze"]
+        Supplier_Bronze_Flow["🔄 supplier_bronze"]
+    end
+    
+    %% Bronze Schema
+    subgraph "Bronze Schema (edw_bronze)"
+        Customer_Bronze["customer<br/>(Data Quality + Cleansing)"]
+        Lineitem_Bronze["lineitem<br/>(Data Quality + Cleansing)"]
+        Nation_Bronze["nation<br/>(Data Quality + Cleansing)"]
+        Orders_Bronze["orders<br/>(Data Quality + Cleansing)"]
+        Part_Bronze["part<br/>(Data Quality + Cleansing)"]
+        Partsupp_Bronze["partsupp<br/>(Data Quality + Cleansing)"]
+        Region_Bronze["region<br/>(Data Quality + Cleansing)"]
+        Supplier_Bronze["supplier<br/>(Data Quality + Cleansing)"]
+    end
+    
+    %% Connections
+    Customer_Raw --> Customer_Bronze_Flow --> Customer_Bronze
+    Lineitem_Raw --> Lineitem_Bronze_Flow --> Lineitem_Bronze
+    Nation_Raw --> Nation_Bronze_Flow --> Nation_Bronze
+    Orders_Raw --> Orders_Bronze_Flow --> Orders_Bronze
+    Part_Raw --> Part_Bronze_Flow --> Part_Bronze
+    Partsupp_Raw --> Partsupp_Bronze_Flow --> Partsupp_Bronze
+    Region_Raw --> Region_Bronze_Flow --> Region_Bronze
+    Supplier_Raw --> Supplier_Bronze_Flow --> Supplier_Bronze
+    
+    style Customer_Bronze fill:#FF9800,stroke:#F57C00,stroke-width:2px,color:#fff
+    style Lineitem_Bronze fill:#FF9800,stroke:#F57C00,stroke-width:2px,color:#fff
+    style Nation_Bronze fill:#FF9800,stroke:#F57C00,stroke-width:2px,color:#fff
+    style Orders_Bronze fill:#FF9800,stroke:#F57C00,stroke-width:2px,color:#fff
+    style Part_Bronze fill:#FF9800,stroke:#F57C00,stroke-width:2px,color:#fff
+    style Partsupp_Bronze fill:#FF9800,stroke:#F57C00,stroke-width:2px,color:#fff
+    style Region_Bronze fill:#FF9800,stroke:#F57C00,stroke-width:2px,color:#fff
+    style Supplier_Bronze fill:#FF9800,stroke:#F57C00,stroke-width:2px,color:#fff
+```
+
+### ⚪ **Silver Layer (`silver_load` pipeline)**
+
 ```mermaid
 graph TD
     %% Bronze Schema
@@ -50,43 +255,93 @@ graph TD
     Region_Bronze --> Region_Silver_Flow --> Region_Silver
     Supplier_Bronze --> Supplier_Silver_Flow --> Supplier_Silver
     
-    style Customer_Silver fill:#e8f5e8
-    style Nation_Silver fill:#e8f5e8
-    style Part_Silver fill:#e8f5e8
-    style Partsupp_Silver fill:#e8f5e8
-    style Region_Silver fill:#e8f5e8
-    style Supplier_Silver fill:#e8f5e8
-    style Lineitem_Silver fill:#e3f2fd
-    style Orders_Silver fill:#e3f2fd
+    style Customer_Silver fill:#4CAF50,stroke:#388E3C,stroke-width:2px,color:#fff
+    style Nation_Silver fill:#4CAF50,stroke:#388E3C,stroke-width:2px,color:#fff
+    style Part_Silver fill:#4CAF50,stroke:#388E3C,stroke-width:2px,color:#fff
+    style Partsupp_Silver fill:#4CAF50,stroke:#388E3C,stroke-width:2px,color:#fff
+    style Region_Silver fill:#4CAF50,stroke:#388E3C,stroke-width:2px,color:#fff
+    style Supplier_Silver fill:#4CAF50,stroke:#388E3C,stroke-width:2px,color:#fff
+    style Lineitem_Silver fill:#00BCD4,stroke:#0097A7,stroke-width:2px,color:#fff
+    style Orders_Silver fill:#00BCD4,stroke:#0097A7,stroke-width:2px,color:#fff
 ```
 
-# ACMI EDW - Lakehouse Plumber Sample Project
+### 🟣 **Gold Layer (`gold_load` pipeline)**
 
-A **LakehousePlumber** Delta Live Tables (DLT) pipeline project for processing TPC-H benchmark data using a medallion architecture.
+```mermaid
 
-## Overview
+graph TD
+    %% Silver Schema
+    subgraph "Silver Schema (edw_silver)"
+        Customer_Silver["customer_dim"]
+        Lineitem_Silver["lineitem_fct"]
+        Nation_Silver["nation_dim"]
+        Orders_Silver["orders_fct"]
+        Part_Silver["part_dim"]
+        Partsupp_Silver["partsupp_dim"]
+        Region_Silver["region_dim"]
+        Supplier_Silver["supplier_dim"]
+    end
+    
+    %% Gold Pipeline
+    subgraph "Gold Pipeline (gold_load)"
+        subgraph "Base MV Flows"
+            Customer_LTV_Flow["🔄 customer_lifetime_value"]
+            Sales_Daily_Flow["🔄 sales_summary_daily_mv"]
+            Sales_Monthly_Flow["🔄 sales_summary_monthly_mv"]
+            Revenue_Region_Flow["🔄 revenue_by_region_mv"]
+            Product_Perf_Flow["🔄 product_performance_mv"]
+        end
+        subgraph "Composite MV Flows"
+            Executive_Flow["🔄 executive_dashboard_mv"]
+            Customer_Seg_Flow["🔄 customer_segmentation_mv"]
+        end
+    end
+    
+    %% Gold Schema
+    subgraph "Gold Schema (edw_gold)"
+        subgraph "Base Materialized Views"
+            Customer_LTV_MV["customer_lifetime_value_mv<br/>(Base MV)"]
+            Sales_Daily_MV["sales_summary_daily_mv<br/>(Base MV)"]
+            Sales_Monthly_MV["sales_summary_monthly_mv<br/>(Base MV)"]
+            Revenue_Region_MV["revenue_by_region_mv<br/>(Base MV)"]
+            Product_Perf_MV["product_performance_mv<br/>(Base MV)"]
+        end
+        subgraph "Composite Materialized Views"
+            Executive_MV["executive_dashboard_mv<br/>(Composite MV)"]
+            Customer_Seg_MV["customer_segmentation_mv<br/>(Composite MV)"]
+        end
+    end
+    
+    %% Base MV Connections from Silver
+    Customer_Silver --> Customer_LTV_Flow --> Customer_LTV_MV
+    Nation_Silver --> Customer_LTV_Flow
+    Orders_Silver --> Sales_Daily_Flow --> Sales_Daily_MV
+    Customer_Silver --> Sales_Daily_Flow
+    Orders_Silver --> Sales_Monthly_Flow --> Sales_Monthly_MV
+    Orders_Silver --> Revenue_Region_Flow --> Revenue_Region_MV
+    Customer_Silver --> Revenue_Region_Flow
+    Nation_Silver --> Revenue_Region_Flow
+    Region_Silver --> Revenue_Region_Flow
+    Lineitem_Silver --> Product_Perf_Flow --> Product_Perf_MV
+    Orders_Silver --> Product_Perf_Flow
+    Part_Silver --> Product_Perf_Flow
+    
+    %% Composite MV Connections from Base MVs
+    Sales_Monthly_MV --> Executive_Flow --> Executive_MV
+    Revenue_Region_MV --> Executive_Flow
+    Customer_LTV_MV --> Executive_Flow
+    Product_Perf_MV --> Executive_Flow
+    Customer_LTV_MV --> Customer_Seg_Flow --> Customer_Seg_MV
+    
+    style Customer_LTV_MV fill:#9C27B0,stroke:#7B1FA2,stroke-width:2px,color:#fff
+    style Sales_Daily_MV fill:#9C27B0,stroke:#7B1FA2,stroke-width:2px,color:#fff
+    style Sales_Monthly_MV fill:#9C27B0,stroke:#7B1FA2,stroke-width:2px,color:#fff
+    style Revenue_Region_MV fill:#9C27B0,stroke:#7B1FA2,stroke-width:2px,color:#fff
+    style Product_Perf_MV fill:#9C27B0,stroke:#7B1FA2,stroke-width:2px,color:#fff
+    style Executive_MV fill:#E91E63,stroke:#C2185B,stroke-width:2px,color:#fff
+    style Customer_Seg_MV fill:#E91E63,stroke:#C2185B,stroke-width:2px,color:#fff
+```
 
-This project implements a complete data lakehouse solution for the TPC-H benchmark dataset using [**LakehousePlumber (lhp)**](https://github.com/Mmodarre/Lakehouse_Plumber) to generate Delta Live Tables pipelines. The project follows a medallion architecture pattern with **raw ingestion**, **bronze**, **silver**, and **gold** layers.
-
-The solution processes 8 core TPC-H tables:
-- `customer` - Customer dimension data
-- `lineitem` - Order line items fact data  
-- `nation` - Nation dimension data
-- `orders` - Orders fact data
-- `part` - Part dimension data
-- `partsupp` - Part supplier dimension data
-- `region` - Region dimension data
-- `supplier` - Supplier dimension data
-
-## Todo
-
-- [ ] Add Applend flow with multiple sources writing to the same table (for now using append_flow for single source to each table)
-- [ ] Add once=True for nation and region tables (for now using Auto_cdc_flow)
-- [ ] Add presets demonstration (currently presets are not used)
-- [ ] Add SQL file for SQL queries (for now using inline SQL queries in the pipeline)
-- [ ] Add Python transformation for demonstration.
-
-## Architecture
 
 ### Medallion Architecture Layers
 
@@ -587,29 +842,7 @@ This ensures that:
 
 **Example**: A customer's market segment may change over time. Orders from January should use the customer's January market segment, not their current segment.
 
-## Data Flow Architecture
 
-The following diagrams show the data flow architecture across all four layers of the medallion architecture.
-
-### 🔄 **End-to-End Data Flow**
-
-![Data Flow](assets/End-to-End.svg)
-
-### 🔸 **Raw Ingestion Layer (`raw_ingestions` pipeline)**
-
-![Raw Ingestion Layer](assets/Raw-Ingestion.svg)
-
-### 🟡 **Bronze Layer (`bronze_load` pipeline)**
-
-![Bronze Layer](assets/Bronze-Layer.svg)
-
-### ⚪ **Silver Layer (`silver_load` pipeline)**
-
-![Silver Layer](assets/Silver-Layer.svg)
-
-### 🟣 **Gold Layer (`gold_load` pipeline)**
-
-![Gold Layer](assets/Gold-Layer.svg)
 
 
 ## Data Sources and Formats
