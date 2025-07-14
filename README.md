@@ -1,3 +1,65 @@
+```mermaid
+graph TD
+    %% Bronze Schema
+    subgraph "Bronze Schema (edw_bronze)"
+        Customer_Bronze["customer"]
+        Lineitem_Bronze["lineitem"]
+        Nation_Bronze["nation"]
+        Orders_Bronze["orders"]
+        Part_Bronze["part"]
+        Partsupp_Bronze["partsupp"]
+        Region_Bronze["region"]
+        Supplier_Bronze["supplier"]
+    end
+    
+    %% Silver Pipeline
+    subgraph "Silver Pipeline (silver_load)"
+        Customer_Silver_Flow["🔄 customer_silver_dim"]
+        Lineitem_Silver_Flow["🔄 lineitem_silver_fct"]
+        Nation_Silver_Flow["🔄 nation_silver_dim"]
+        Orders_Silver_Flow["🔄 orders_silver_fct"]
+        Part_Silver_Flow["🔄 part_silver_dim"]
+        Partsupp_Silver_Flow["🔄 partsupp_silver_dim"]
+        Region_Silver_Flow["🔄 region_silver_dim"]
+        Supplier_Silver_Flow["🔄 supplier_silver_dim"]
+    end
+    
+    %% Silver Schema
+    subgraph "Silver Schema (edw_silver)"
+        subgraph "Dimensions (SCD Type 2)"
+            Customer_Silver["customer_dim<br/>(CDC + SCD Type 2)"]
+            Nation_Silver["nation_dim<br/>(CDC + SCD Type 2)"]
+            Part_Silver["part_dim<br/>(CDC + SCD Type 2)"]
+            Partsupp_Silver["partsupp_dim<br/>(CDC + SCD Type 2)"]
+            Region_Silver["region_dim<br/>(CDC + SCD Type 2)"]
+            Supplier_Silver["supplier_dim<br/>(CDC + SCD Type 2)"]
+        end
+        subgraph "Facts (SCD Type 1)"
+            Lineitem_Silver["lineitem_fct<br/>(CDC + SCD Type 1)"]
+            Orders_Silver["orders_fct<br/>(CDC + SCD Type 1)"]
+        end
+    end
+    
+    %% Connections
+    Customer_Bronze --> Customer_Silver_Flow --> Customer_Silver
+    Lineitem_Bronze --> Lineitem_Silver_Flow --> Lineitem_Silver
+    Nation_Bronze --> Nation_Silver_Flow --> Nation_Silver
+    Orders_Bronze --> Orders_Silver_Flow --> Orders_Silver
+    Part_Bronze --> Part_Silver_Flow --> Part_Silver
+    Partsupp_Bronze --> Partsupp_Silver_Flow --> Partsupp_Silver
+    Region_Bronze --> Region_Silver_Flow --> Region_Silver
+    Supplier_Bronze --> Supplier_Silver_Flow --> Supplier_Silver
+    
+    style Customer_Silver fill:#e8f5e8
+    style Nation_Silver fill:#e8f5e8
+    style Part_Silver fill:#e8f5e8
+    style Partsupp_Silver fill:#e8f5e8
+    style Region_Silver fill:#e8f5e8
+    style Supplier_Silver fill:#e8f5e8
+    style Lineitem_Silver fill:#e3f2fd
+    style Orders_Silver fill:#e3f2fd
+```
+
 # ACMI EDW - Lakehouse Plumber Sample Project
 
 A **LakehousePlumber** Delta Live Tables (DLT) pipeline project for processing TPC-H benchmark data using a medallion architecture.
