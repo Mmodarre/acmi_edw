@@ -13,8 +13,8 @@ actions:
       type: sql
       sql: |
           SELECT 
-              r.name,
-              n.name,
+              r.name as region_name,
+              n.name as nation_name,
               DATE_TRUNC('month', o.order_date) as month,
               SUM(o.total_price) as region_revenue,
               COUNT(DISTINCT o.order_id) as region_orders,

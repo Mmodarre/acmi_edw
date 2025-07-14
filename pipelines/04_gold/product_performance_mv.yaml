@@ -13,12 +13,12 @@ actions:
       type: sql
       sql: |
         SELECT 
-          p.part_key,
+          p.part_id,
           p.name as product_name,
           p.manufacturer,
           p.brand,
           p.type,
-          COUNT(DISTINCT l.order_key) as orders_count,
+          COUNT(DISTINCT l.order_id) as orders_count,
           SUM(l.quantity) as total_quantity_sold,
           SUM(l.extended_price) as total_revenue,
           AVG(l.extended_price / l.quantity) as avg_unit_price,
@@ -26,9 +26,9 @@ actions:
           AVG(l.discount) as avg_discount_rate,
           DATE_TRUNC('month', o.order_date) as month
         FROM {catalog}.{silver_schema}.part_dim p
-        JOIN {catalog}.{silver_schema}.lineitem_fct l ON p.part_key = l.part_key
-        JOIN {catalog}.{silver_schema}.orders_fct o ON l.order_key = o.order_key
-        GROUP BY p.part_key, p.name, p.manufacturer, p.brand, p.type, DATE_TRUNC('month', o.order_date)
+        JOIN {catalog}.{silver_schema}.lineitem_fct l ON p.part_id = l.part_id
+        JOIN {catalog}.{silver_schema}.orders_fct o ON l.order_id = o.order_id
+        GROUP BY p.part_id, p.name, p.manufacturer, p.brand, p.type, DATE_TRUNC('month', o.order_date)
     target: v_product_performance_mv_sql
     
 
