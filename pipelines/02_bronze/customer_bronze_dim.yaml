@@ -31,7 +31,8 @@ actions:
         _source_file_path,
         _source_file_size,
         _source_file_modification_time,
-        _record_hash
+        _record_hash,
+        _processing_timestamp
       FROM stream(v_customer_bronze)
 
   - name: customer_bronze_DQE
