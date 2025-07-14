@@ -82,14 +82,14 @@
         "timestamp": "2025-07-14T15:38:47.687487"
       },
       "generated/02_bronze/customer_bronze.py": {
-        "checksum": "4f887e2373b916b30f88a1430624fbb43163222108e9c1b01891c1a3dd177b61",
+        "checksum": "ce4513e93006679f3012c9880621948a0e36e8cb88fe222406a315d9e677200f",
         "environment": "dev",
         "flowgroup": "customer_bronze",
         "generated_path": "generated/02_bronze/customer_bronze.py",
         "pipeline": "02_bronze",
         "source_yaml": "pipelines/02_bronze/customer_bronze.yaml",
-        "source_yaml_checksum": "6843d7328595a64dea0304d4813dc10557c48bfcb5a8d879a7cbe8edea0d1214",
-        "timestamp": "2025-07-14T15:38:47.272682"
+        "source_yaml_checksum": "4273cb58b70b721dd33fe246b53c95a37b271d05f4ec138c402e04f624ae14d1",
+        "timestamp": "2025-07-14T15:41:23.667690"
       },
       "generated/02_bronze/customer_bronze_dim.py": {
         "checksum": "41ef3bea08367c0bd9307a2c5b7341c3e26b09a0cafa731b47b84f3686e97cb5",
@@ -393,6 +393,6 @@
       }
     }
   },
-  "last_updated": "2025-07-14T15:38:47.923942",
+  "last_updated": "2025-07-14T15:41:23.668553",
   "version": "1.0"
 }
