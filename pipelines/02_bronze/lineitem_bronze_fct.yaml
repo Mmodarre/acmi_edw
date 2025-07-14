@@ -34,6 +34,8 @@ actions:
         l_commitdate as commit_date,
         l_receiptdate as receipt_date,
         l_shipinstruct as ship_instruct,
+        l_shipmode as ship_mode,
+        l_comment as comment,
         _source_file_path,
         _source_file_size,
         _source_file_modification_time,

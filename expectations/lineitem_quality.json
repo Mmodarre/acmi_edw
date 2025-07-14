@@ -4,22 +4,22 @@
   "expectations": [
     {
       "name": "valid_orderkey",
-      "expression": "orderkey IS NOT NULL AND orderkey > 0",
+      "expression": "order_id IS NOT NULL AND order_id > 0",
       "failureAction": "fail"
     },
     {
       "name": "valid_partkey",
-      "expression": "partkey IS NOT NULL AND partkey > 0",
+      "expression": "part_id IS NOT NULL AND part_id > 0",
       "failureAction": "fail"
     },
     {
       "name": "valid_suppkey",
-      "expression": "suppkey IS NOT NULL AND suppkey > 0",
+      "expression": "supplier_id IS NOT NULL AND supplier_id > 0",
       "failureAction": "fail"
     },
     {
       "name": "valid_linenumber",
-      "expression": "linenumber IS NOT NULL AND linenumber > 0",
+      "expression": "line_number IS NOT NULL AND line_number > 0",
       "failureAction": "fail"
     },
     {
@@ -50,27 +50,27 @@
     },
     {
       "name": "valid_linestatus",
-      "expression": "linestatus IS NOT NULL AND linestatus IN ('F', 'O')",
+      "expression": "line_status IS NOT NULL AND line_status IN ('F', 'O')",
       "failureAction": "warn"
     },
     {
       "name": "valid_shipdate",
-      "expression": "(shipdate IS NOT NULL AND shipdate >= '1900-01-01') or shipdate is null",
+      "expression": "(ship_date IS NOT NULL AND ship_date >= '1900-01-01') or ship_date is null",
       "failureAction": "warn"
     },
     {
       "name": "valid_commitdate",
-      "expression": "commitdate IS NOT NULL AND commitdate > 0",
+      "expression": "commit_date IS NOT NULL AND commit_date > 0",
       "failureAction": "warn"
     },
     {
       "name": "valid_receiptdate",
-      "expression": "(receiptdate IS NOT NULL AND receiptdate >= '1900-01-01') or receiptdate is null",
+      "expression": "(receipt_date IS NOT NULL AND receipt_date >= '1900-01-01') or receipt_date is null",
       "failureAction": "warn"
     },
     {
       "name": "valid_shipmode",
-      "expression": "shipmode IS NOT NULL AND shipmode IN ('RAIL','REG AIR','TRUCK','MAIL','SHIP','FOB')",
+      "expression": "ship_mode IS NOT NULL AND ship_mode IN ('RAIL','REG AIR','TRUCK','MAIL','SHIP','FOB')",
       "failureAction": "warn"
     }
     
