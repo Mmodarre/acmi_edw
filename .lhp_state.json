@@ -2,247 +2,247 @@
   "environments": {
     "dev": {
       "generated/01_raw_ingestion/customer_ingestion.py": {
-        "checksum": "66a03c095950c22dbcec3522dbb0eb5f82601bfcabd78497171cb28103a9ff8d",
+        "checksum": "f4131a3e59da31c462c22c91a6b9bc0e25d6e582902869a323e8f15d0027ec65",
         "environment": "dev",
         "flowgroup": "customer_ingestion",
         "generated_path": "generated/01_raw_ingestion/customer_ingestion.py",
         "pipeline": "01_raw_ingestion",
         "source_yaml": "pipelines/01_raw_ingestion/csv_ingestions/customer_ingestion.yaml",
         "source_yaml_checksum": "6b8f904d96f7784ec8fbd75882b654343fa7e794c79d54e79eb63c240f19ee82",
-        "timestamp": "2025-07-14T12:50:39.589203"
+        "timestamp": "2025-07-14T12:56:00.553069"
       },
       "generated/01_raw_ingestion/lineitem_ingestion.py": {
-        "checksum": "c220dbb3a7f9b6fdbbcf6082b7bc055b88aa784c2f8a0f4aa4da5540a6a77517",
+        "checksum": "cd3227e5a43c73b61b7872509a3ba0d3ad1a649a48a183d5dcabfcf363d5a940",
         "environment": "dev",
         "flowgroup": "lineitem_ingestion",
         "generated_path": "generated/01_raw_ingestion/lineitem_ingestion.py",
         "pipeline": "01_raw_ingestion",
         "source_yaml": "pipelines/01_raw_ingestion/csv_ingestions/lineitem_ingestion.yaml",
         "source_yaml_checksum": "a801d6881752f469091b9ad1d4784cc1322f73756ec9d40f14884c49504467b8",
-        "timestamp": "2025-07-14T12:50:39.553283"
+        "timestamp": "2025-07-14T12:56:00.520456"
       },
       "generated/01_raw_ingestion/nation_ingestion.py": {
-        "checksum": "cf3cef6375c7af04c0514e03146659d75b56394c0f3bf1355f177a63aecd3add",
+        "checksum": "2c9372d98e0284b131e70a1816a32c5f3d70b276ac4d1ac15b1b5ad7c36b7de8",
         "environment": "dev",
         "flowgroup": "nation_ingestion",
         "generated_path": "generated/01_raw_ingestion/nation_ingestion.py",
         "pipeline": "01_raw_ingestion",
         "source_yaml": "pipelines/01_raw_ingestion/csv_ingestions/nation_ingestion.yaml",
         "source_yaml_checksum": "298014bbab3066103a8c8d880a52695a42c4312a86d97c6910fe731a21077f05",
-        "timestamp": "2025-07-14T12:50:39.660969"
+        "timestamp": "2025-07-14T12:56:00.620875"
       },
       "generated/01_raw_ingestion/orders_ingestion.py": {
-        "checksum": "1e94dcc9ffa1982951bc0a91f4acdb1ce5460f27d15bc19064d8d5aecc6c296e",
+        "checksum": "5085623d8047ebbcd6cf4c57627a4d3c9e1a03a1707941df8c4ca2ceace9f048",
         "environment": "dev",
         "flowgroup": "orders_ingestion",
         "generated_path": "generated/01_raw_ingestion/orders_ingestion.py",
         "pipeline": "01_raw_ingestion",
         "source_yaml": "pipelines/01_raw_ingestion/csv_ingestions/orders_ingestion.yaml",
         "source_yaml_checksum": "1c2f79a49f8fa827d8b2aa49f5ffaa1532bb5e7d06d9816fd19cf386e535ea43",
-        "timestamp": "2025-07-14T12:50:39.625856"
+        "timestamp": "2025-07-14T12:56:00.586055"
       },
       "generated/01_raw_ingestion/part_ingestion.py": {
-        "checksum": "b45da057100c8521914d1efe9a69901a93f3c331b110020fda85d399910cddbf",
+        "checksum": "22a165cd50122a9bdf00c709a2155243bd45dd29e3d4b4a10ff85edf2d283849",
         "environment": "dev",
         "flowgroup": "part_ingestion",
         "generated_path": "generated/01_raw_ingestion/part_ingestion.py",
         "pipeline": "01_raw_ingestion",
         "source_yaml": "pipelines/01_raw_ingestion/json_ingestion/part_ingestion.yaml",
         "source_yaml_checksum": "a179278a38cf9246df7385fe08c12d1f5117ef13cfcc2428d4ed1659ed4efa73",
-        "timestamp": "2025-07-14T12:50:39.423905"
+        "timestamp": "2025-07-14T12:56:00.399823"
       },
       "generated/01_raw_ingestion/partsupp_ingestion.py": {
-        "checksum": "d4f0d9d84156967a690dd3745586146bc2a1e8d107ef84e9fcf1aa1f9121def8",
+        "checksum": "a71ffd96d8791e3e61384a72b43e35c100b568a156b69c91232fa8d49b1eb38f",
         "environment": "dev",
         "flowgroup": "partsupp_ingestion",
         "generated_path": "generated/01_raw_ingestion/partsupp_ingestion.py",
         "pipeline": "01_raw_ingestion",
         "source_yaml": "pipelines/01_raw_ingestion/json_ingestion/partsupp_ingestion.yaml",
         "source_yaml_checksum": "b91bde5a2bf32cb409d95ae7c9f2c1525be6ef8e51646d1931a4ab56e73215be",
-        "timestamp": "2025-07-14T12:50:39.456403"
+        "timestamp": "2025-07-14T12:56:00.429930"
       },
       "generated/01_raw_ingestion/region_ingestion.py": {
-        "checksum": "2c92448063157b3e19a63fceab5d8c9ca81e4453bf9c8c9013f080b0c7eeeb02",
+        "checksum": "600afa9ff1624f926ac8019087cde1b985193eaadb33e8c36181946f0db5dcc6",
         "environment": "dev",
         "flowgroup": "region_ingestion",
         "generated_path": "generated/01_raw_ingestion/region_ingestion.py",
         "pipeline": "01_raw_ingestion",
         "source_yaml": "pipelines/01_raw_ingestion/parquet_ingestions/region_ingestion.yaml",
         "source_yaml_checksum": "871bcb778eaca5ef6db73fe2d64b7b1991cbcb766a2acd022906d0e15945b0ad",
-        "timestamp": "2025-07-14T12:50:39.486129"
+        "timestamp": "2025-07-14T12:56:00.458117"
       },
       "generated/01_raw_ingestion/supplier_ingestion.py": {
-        "checksum": "d5bd54cde0d7f7e51e0ca60bc741a62ee856907bbc555a3ccee37a3bf72f655f",
+        "checksum": "7a7003bcebd78cc713b6ccc8bf4a26395ef7116b1abe2ac7ce28d8c80355a1d2",
         "environment": "dev",
         "flowgroup": "supplier_ingestion",
         "generated_path": "generated/01_raw_ingestion/supplier_ingestion.py",
         "pipeline": "01_raw_ingestion",
         "source_yaml": "pipelines/01_raw_ingestion/parquet_ingestions/supplier_ingestion.yaml",
         "source_yaml_checksum": "597b1373f51e4667e3e67e76f8e74725405f63ef78f737e40ebab3609355487a",
-        "timestamp": "2025-07-14T12:50:39.517682"
+        "timestamp": "2025-07-14T12:56:00.487025"
       },
       "generated/02_bronze/customer_bronze_dim.py": {
-        "checksum": "09bcb64b58ed2fd5134dd0ad35e5048f128b6036d229cb974695e02528554f3b",
+        "checksum": "c23e8bc43c7e8ada719b26e648f1493958d92f8f78e2ca15c8df04a08eb4a57f",
         "environment": "dev",
         "flowgroup": "customer_bronze_dim",
         "generated_path": "generated/02_bronze/customer_bronze_dim.py",
         "pipeline": "02_bronze",
         "source_yaml": "pipelines/02_bronze/dim/customer_bronze_dim.yaml",
         "source_yaml_checksum": "ac9953436170af69f8a89cb13e9e1e9f73eeefe54f67a06607df7173b04c658c",
-        "timestamp": "2025-07-14T12:50:39.001143"
+        "timestamp": "2025-07-14T12:55:59.998672"
       },
       "generated/02_bronze/lineitem_bronze_fct.py": {
-        "checksum": "b547598e0e750ee463f659ec20f891295407eb4a6f200e04e215bde65649beb9",
+        "checksum": "cd85b7d8cce5840a6dd7cbadff7b0d534dbfcbf225babab8935be37f1cc05aff",
         "environment": "dev",
         "flowgroup": "lineitem_bronze_fct",
         "generated_path": "generated/02_bronze/lineitem_bronze_fct.py",
         "pipeline": "02_bronze",
         "source_yaml": "pipelines/02_bronze/fct/lineitem_bronze_fct.yaml",
         "source_yaml_checksum": "c3c87df302b844bd3ff21176c6531ef50cf3840f958fe5980cdd32d3401c1af9",
-        "timestamp": "2025-07-14T12:50:39.116718"
+        "timestamp": "2025-07-14T12:56:00.106021"
       },
       "generated/02_bronze/nation_bronze_dim.py": {
-        "checksum": "da0bfebde9ae424fe410905c3dd31e2a33a21e850636bed85746b6ffae1804e5",
+        "checksum": "19044df22277676072a1f050701d65b120aef3acbecbfcee6d6a733f81b0ab3d",
         "environment": "dev",
         "flowgroup": "nation_bronze_dim",
         "generated_path": "generated/02_bronze/nation_bronze_dim.py",
         "pipeline": "02_bronze",
         "source_yaml": "pipelines/02_bronze/dim/nation_bronze_dim.yaml",
         "source_yaml_checksum": "554c76c578b45adbc9fb59d618c61cc0c7b60976907f6ecc439ef6ad53672097",
-        "timestamp": "2025-07-14T12:50:38.934279"
+        "timestamp": "2025-07-14T12:55:59.935752"
       },
       "generated/02_bronze/orders_bronze_fct.py": {
-        "checksum": "b5b3d358fbdcadccb44808900a2ecac44f4237ac195b0bd24860a961501cc5c8",
+        "checksum": "05e4151ca42d788342a58d9fe510791ac181593a98f2881d18fc5fc3382d027f",
         "environment": "dev",
         "flowgroup": "orders_bronze_fct",
         "generated_path": "generated/02_bronze/orders_bronze_fct.py",
         "pipeline": "02_bronze",
         "source_yaml": "pipelines/02_bronze/fct/orders_bronze_fct.yaml",
         "source_yaml_checksum": "442d3d8ec2e14d57340e108ca48b81c96da212d519f06b4caadb3bca8f0745f1",
-        "timestamp": "2025-07-14T12:50:39.072510"
+        "timestamp": "2025-07-14T12:56:00.064829"
       },
       "generated/02_bronze/part_bronze_dim.py": {
-        "checksum": "5f881060acc0bb76badd575cbb9bc342f633bdc055fe32f3d642daab987a670f",
+        "checksum": "467f0a5697b18853bc88dcfbe7d4d79214b038945ca483c7ef16101702879cd2",
         "environment": "dev",
         "flowgroup": "part_bronze_dim",
         "generated_path": "generated/02_bronze/part_bronze_dim.py",
         "pipeline": "02_bronze",
         "source_yaml": "pipelines/02_bronze/dim/part_bronze_dim.yaml",
         "source_yaml_checksum": "ce7d6dc6066d3c47e3e3fa680a8c39bc4f061c2a89011cf1a814806a65127ddd",
-        "timestamp": "2025-07-14T12:50:38.878134"
+        "timestamp": "2025-07-14T12:55:59.883892"
       },
       "generated/02_bronze/partsupp_bronze_dim.py": {
-        "checksum": "7e9776ab4610c2454892e17965bce5061be7552eaa34078a39e2afbc4cedee37",
+        "checksum": "e7c4ab16c1805fb75a2f4557d83735c22a9edbd59dd9c142a02dc141d9369089",
         "environment": "dev",
         "flowgroup": "partsupp_bronze_dim",
         "generated_path": "generated/02_bronze/partsupp_bronze_dim.py",
         "pipeline": "02_bronze",
         "source_yaml": "pipelines/02_bronze/dim/partsupp_bronze_dim.yaml",
         "source_yaml_checksum": "a8ede46383b7e50e2a144bc9ab052f7c04b3fdd9bba252cfcb14451fc3b6c04f",
-        "timestamp": "2025-07-14T12:50:38.905786"
+        "timestamp": "2025-07-14T12:55:59.909575"
       },
       "generated/02_bronze/region_bronze_dim.py": {
-        "checksum": "e82cf1b6ecf81c57d36c20ed7d833e5d3520e436bafe65a7156c22f3d9b4a53f",
+        "checksum": "e9d28675f405310ab2b53b807590c4b70185bfc69b2e1dd3d0cd7de80622376e",
         "environment": "dev",
         "flowgroup": "region_bronze_dim",
         "generated_path": "generated/02_bronze/region_bronze_dim.py",
         "pipeline": "02_bronze",
         "source_yaml": "pipelines/02_bronze/dim/region_bronze_dim.yaml",
         "source_yaml_checksum": "52b4acbd30185b28c18049b8c0349f28d7b290785f526e83a86c96e8ba242b23",
-        "timestamp": "2025-07-14T12:50:38.964145"
+        "timestamp": "2025-07-14T12:55:59.964481"
       },
       "generated/02_bronze/supplier_bronze_dim.py": {
-        "checksum": "e8bdf5216681521d203e6e583f75c2c8a2e885bad783b0eb2c09730cb3da39f1",
+        "checksum": "b01407edf3e86499441e84e9333c3d4c6b30ef2d61682e9bb8aaf03cfa25dd2c",
         "environment": "dev",
         "flowgroup": "supplier_bronze_dim",
         "generated_path": "generated/02_bronze/supplier_bronze_dim.py",
         "pipeline": "02_bronze",
         "source_yaml": "pipelines/02_bronze/dim/supplier_bronze_dim.yaml",
         "source_yaml_checksum": "8c71b00d8f7e1d0f7993596edf2e1bc1c61e7746d4e30152b9fea9bd92860cef",
-        "timestamp": "2025-07-14T12:50:39.039316"
+        "timestamp": "2025-07-14T12:56:00.033345"
       },
       "generated/03_silver/customer_silver_dim.py": {
-        "checksum": "387638ee9aa2e1bc742ab22580bdebd898773fbcd2dc401e1f810e1835c7c226",
+        "checksum": "9d9a6946a7ef0d0e10362fd6e032796bac822a726199ec2d53538693520e8dc1",
         "environment": "dev",
         "flowgroup": "customer_silver_dim",
         "generated_path": "generated/03_silver/customer_silver_dim.py",
         "pipeline": "03_silver",
         "source_yaml": "pipelines/03_silver/dim/customer_silver_dim.yaml",
         "source_yaml_checksum": "a26e8c3c46300fc04c73636ef383a88c054a5b9f767e0d91badc3c33680dc8f5",
-        "timestamp": "2025-07-14T12:50:39.155791"
+        "timestamp": "2025-07-14T12:56:00.144403"
       },
       "generated/03_silver/lineitem_silver_fct.py": {
-        "checksum": "916e55efbd927bcbf7aac332a5d06dcfde7e25a68f04940cb011f20e128e4972",
+        "checksum": "1d019664f0ad8025095f7f9f35a4ecf9a18626f73307b75d537114e8bba2f292",
         "environment": "dev",
         "flowgroup": "lineitem_silver_fct",
         "generated_path": "generated/03_silver/lineitem_silver_fct.py",
         "pipeline": "03_silver",
         "source_yaml": "pipelines/03_silver/fct/lineitem_silver_fct.yaml",
         "source_yaml_checksum": "70d0ea93ae0229daeb93b980a68d738f27cb831be4827d4cac6d759f17c0d5e1",
-        "timestamp": "2025-07-14T12:50:39.328720"
+        "timestamp": "2025-07-14T12:56:00.304102"
       },
       "generated/03_silver/nation_silver_dim.py": {
-        "checksum": "be9b04c40ff5613d1725cf12799c1b0a65666787af85cdc74f89d8a0116dd2cc",
+        "checksum": "4becd7b635e98ab6091a2b57a405dfc4a85dcdc98c201f26b71c301470dfa715",
         "environment": "dev",
         "flowgroup": "nation_silver_dim",
         "generated_path": "generated/03_silver/nation_silver_dim.py",
         "pipeline": "03_silver",
         "source_yaml": "pipelines/03_silver/dim/nation_silver_dim.yaml",
         "source_yaml_checksum": "35425ee09477ee23f1edf3f927a581262ffc52fac4417cf068eb98e4a1c0cd4e",
-        "timestamp": "2025-07-14T12:50:39.264256"
+        "timestamp": "2025-07-14T12:56:00.244403"
       },
       "generated/03_silver/orders_silver_fct.py": {
-        "checksum": "964622bf30e1bd82b9424ec512b1d31cde5aa2d9834a7789dafdfdcf24957a78",
+        "checksum": "b898bd950b555f13a5968668b179824de31ae4ce9f2080f444fb4ea9156a6fa6",
         "environment": "dev",
         "flowgroup": "orders_silver_fct",
         "generated_path": "generated/03_silver/orders_silver_fct.py",
         "pipeline": "03_silver",
         "source_yaml": "pipelines/03_silver/fct/orders_silver_fct.yaml",
         "source_yaml_checksum": "280f64c171b25093f7c037b47625c994aad548cd3e662932ca0f551a9a8a708e",
-        "timestamp": "2025-07-14T12:50:39.360990"
+        "timestamp": "2025-07-14T12:56:00.337275"
       },
       "generated/03_silver/part_silver_dim.py": {
-        "checksum": "7ebfba06420d42c9aa5266f5dc1c52eecd418bead80b64bf58008e77f6e66159",
+        "checksum": "e5d17726d5776a2c714abb5b24add3892a5b8636038582ef768c2bfdc8112076",
         "environment": "dev",
         "flowgroup": "part_silver_dim",
         "generated_path": "generated/03_silver/part_silver_dim.py",
         "pipeline": "03_silver",
         "source_yaml": "pipelines/03_silver/dim/part_silver_dim.yaml",
         "source_yaml_checksum": "89f60755d84928089cfa485a417bb295d1b8aba2b2cd433f4450ebb993bd24fc",
-        "timestamp": "2025-07-14T12:50:39.235631"
+        "timestamp": "2025-07-14T12:56:00.218142"
       },
       "generated/03_silver/partsupp_silver_dim.py": {
-        "checksum": "d3022a9a7cdf4c43d5b3c82ac5f8029e1a6cb24dec6ff096d02b17759f6dc5e5",
+        "checksum": "f8f410a7513c27d4f327c14ab93ee6a1773e62477d625893900af880c9466494",
         "environment": "dev",
         "flowgroup": "partsupp_silver_dim",
         "generated_path": "generated/03_silver/partsupp_silver_dim.py",
         "pipeline": "03_silver",
         "source_yaml": "pipelines/03_silver/dim/partsupp_silver_dim.yaml",
         "source_yaml_checksum": "69d5af65db49f315523823c1059cdcdafcf5473d3557f9666f48daacf97a8521",
-        "timestamp": "2025-07-14T12:50:39.208273"
+        "timestamp": "2025-07-14T12:56:00.192674"
       },
       "generated/03_silver/region_silver_dim.py": {
-        "checksum": "b8b19fdb725ae6f83b784fee40947cb9c6a34a5ac346c1fb65da6ce6ed1aded3",
+        "checksum": "ab1418f1222e7765aef30867ade88f9d780ab2af1d8efb22d5b1ec4617991555",
         "environment": "dev",
         "flowgroup": "region_silver_dim",
         "generated_path": "generated/03_silver/region_silver_dim.py",
         "pipeline": "03_silver",
         "source_yaml": "pipelines/03_silver/dim/region_silver_dim.yaml",
         "source_yaml_checksum": "fc2fe92c4d4f44b687f1930677119388049f2d0ad866ace57ead249975e785c0",
-        "timestamp": "2025-07-14T12:50:39.296535"
+        "timestamp": "2025-07-14T12:56:00.272647"
       },
       "generated/03_silver/supplier_silver_dim.py": {
-        "checksum": "1f7a62ff36f13d3c20f5671f54fd14e376caccfa8a44c447dbadc81ea1ffb2ef",
+        "checksum": "152fd14035f6457eabc9c8e61c4b562099f6a40507902938c0947549cddc22c7",
         "environment": "dev",
         "flowgroup": "supplier_silver_dim",
         "generated_path": "generated/03_silver/supplier_silver_dim.py",
         "pipeline": "03_silver",
         "source_yaml": "pipelines/03_silver/dim/supplier_silver_dim.yaml",
         "source_yaml_checksum": "1e4c2647cdf137e563824983dc5bea53a56b54075f227d91665c80e60bc33cb7",
-        "timestamp": "2025-07-14T12:50:39.181301"
+        "timestamp": "2025-07-14T12:56:00.167695"
       }
     }
   },
-  "last_updated": "2025-07-14T12:50:39.662157",
+  "last_updated": "2025-07-14T12:56:00.622129",
   "version": "1.0"
 }

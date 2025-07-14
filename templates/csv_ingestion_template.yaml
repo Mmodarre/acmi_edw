@@ -37,12 +37,12 @@ actions:
         cloudFiles.rescuedDataColumn: "_rescued_data"
         cloudFiles.schemaHints: "schemas/{{ table_name }}_schema.yaml"
 
-    target: v_{{ table_name }}_raw
+    target: v_{{ table_name }}_cloudfiles
     description: "Load {{ table_name }} CSV files from landing volume"
 
-  - name: write_{{ table_name }}_raw
+  - name: write_{{ table_name }}_cloudfiles
     type: write
-    source: v_{{ table_name }}_raw
+    source: v_{{ table_name }}_cloudfiles
     write_target:
       type: streaming_table
       database: "{catalog}.{raw_schema}"
