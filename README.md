@@ -26,6 +26,7 @@ The solution processes 8 core TPC-H tables:
 - [ ] Add presets demonstration (currently presets are not used)
 - [ ] Add SQL file for SQL queries (for now using inline SQL queries in the pipeline)
 - [ ] Add Python transformation for demonstration.
+- [ ] Add CloudFiles queue instead of directory listing for ingestion.
 
 ## Architecture
 
